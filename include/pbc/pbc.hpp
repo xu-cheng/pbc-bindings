@@ -24,6 +24,15 @@ namespace pbc
         NotAllocatedException() : runtime_error("Object is not allocated.") {}
     };
 
+    class InitializationError : public std::runtime_error
+    {
+    public:
+        InitializationError() : runtime_error("Failed to initialize object.") {}
+        InitializationError(const std::string& msg) : runtime_error(msg) {}
+    };
+
+    class Pairing;
+
     class PairingParam
     {
     public:
@@ -41,10 +50,13 @@ namespace pbc
             return buf.str();
         }
 
-        static PairingParamPtr from_str(const std::string param_str)
+        static PairingParamPtr from_str(const std::string& param_str)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();
-            backend::pbc_param_init_set_str(ptr->_param, param_str.c_str());
+            if (backend::pbc_param_init_set_str(ptr->_param,
+                                                param_str.c_str()) != 0)
+                throw InitializationError(
+                    "Failed to initialize pairing parameter.");
             return ptr;
         }
         static PairingParamPtr init_a(int rbits = 160, int qbits = 512)
