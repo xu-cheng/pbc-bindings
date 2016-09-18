@@ -85,6 +85,7 @@ namespace pbc
         }
 
     private:
+        friend class Pairing;
         backend::pbc_param_t _param;
     };
 
@@ -98,7 +99,56 @@ namespace pbc
         ~Pairing() { pairing_clear(_pairing); }
         typedef std::shared_ptr<Pairing> PairingPtr;
 
+        static PairingPtr init_from_param_str(const std::string& param_str)
+        {
+            return Pairing::init_from_param(PairingParam::init_from_str(param_str));
+            PairingPtr ptr = std::make_shared<Pairing>();
+            if (backend::pairing_init_set_str(ptr->_pairing,
+                                              param_str.c_str()) != 0)
+                throw InitializationError("Failed to initialize pairing.");
+            return ptr;
+        }
+        static PairingPtr init_from_param(const PairingParamPtr& param)
+        {
+            PairingPtr ptr = std::make_shared<Pairing>();
+            backend::pairing_init_pbc_param(ptr->_pairing, param->_param);
+            return ptr;
+        }
+
         bool symmetric() { return backend::pairing_is_symmetric(_pairing); }
+        int g1_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_G1(_pairing);
+        }
+        int g1_x_only_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_x_only_G1(_pairing);
+        }
+        int g1_compressed_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_compressed_G1(_pairing);
+        }
+        int g2_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_G2(_pairing);
+        }
+        int g2_x_only_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_x_only_G2(_pairing);
+        }
+        int g2_compressed_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_compressed_G2(_pairing);
+        }
+        int gt_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_GT(_pairing);
+        }
+        int zr_bytes_length()
+        {
+            return backend::pairing_length_in_bytes_Zr(_pairing);
+        }
+
     private:
         backend::pairing_t _pairing;
     };
