@@ -1,10 +1,4 @@
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE pairing
-#include <boost/test/unit_test.hpp>
-#include "pbc/pbc.hpp"
-
-using namespace std;
-using namespace pbc;
+#include "helper.h"
 
 BOOST_AUTO_TEST_CASE(init_from_param_and_str)
 {
