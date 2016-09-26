@@ -199,8 +199,8 @@ namespace pbc
     class Element
     {
     public:
-        Element() : _type(ElementType::NotInitialized) {}
-        Element(const Element& e) : _type(e._type)
+        Element() : _type(ElementType::NotInitialized), _pairing(nullptr) {}
+        Element(const Element& e) : _type(e._type), _pairing(e._pairing)
         {
             if (_type != ElementType::NotInitialized) {
                 backend::element_init_same_as(
@@ -209,7 +209,7 @@ namespace pbc
                                      *(backend::element_t*)&e._element);
             }
         }
-        Element(Element&& e) noexcept : _type(e._type)
+        Element(Element&& e) noexcept : _type(e._type), _pairing(e._pairing)
         {
             std::memcpy(&_element[0], &e._element[0],
                         sizeof(backend::element_t));
@@ -230,6 +230,7 @@ namespace pbc
             throw AlreadyInitializedError();                       \
         backend::element_init_##type(_element, pairing->_pairing); \
         _type = ElementType::type;                                 \
+        _pairing = pairing;                                        \
     }
 
         Element_Init_Func(G1, g1);
@@ -245,6 +246,7 @@ namespace pbc
                 _type = ElementType::G1;
             else
                 _type = ElementType::G2;
+            _pairing = pairing;
         }
         void init_same_as(const Element& e)
         {
@@ -255,6 +257,7 @@ namespace pbc
             backend::element_init_same_as(_element,
                                           *(backend::element_t*)&e._element);
             _type = e._type;
+            _pairing = e._pairing;
         }
 
         ElementType type() const { return _type; }
@@ -275,6 +278,7 @@ namespace pbc
             std::memcpy(&_element[0], &e._element[0],
                         sizeof(backend::element_t));
             _type = e._type;
+            _pairing = e._pairing;
             e._type = ElementType::NotInitialized;
             return *this;
         }
@@ -290,6 +294,7 @@ namespace pbc
                 backend::element_set(_element,
                                      *(backend::element_t*)&e._element);
             _type = e._type;
+            _pairing = e._pairing;
             return *this;
         }
         Element& operator=(int i)
@@ -461,6 +466,7 @@ namespace pbc
     private:
         backend::element_t _element;
         ElementType _type;
+        PairingPtr _pairing;
     };
 
     std::ostream& operator<<(std::ostream& o, const Element& e)

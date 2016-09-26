@@ -36,16 +36,13 @@ BOOST_AUTO_TEST_CASE(init)
 
 BOOST_AUTO_TEST_CASE(init_g2)
 {
-    Element e1;
+    Element e1, e2;
     e1.init_g2(pairing);
     BOOST_TEST(e1.type() == ElementType::G1);
     PairingParamPtr pp = PairingParam::gen_type_f();
     PairingPtr p = Pairing::init_from_param(pp);
-    {
-        Element e2;
-        e2.init_g2(p);
-        BOOST_TEST(e2.type() == ElementType::G2);
-    }
+    e2.init_g2(p);
+    BOOST_TEST(e2.type() == ElementType::G2);
 }
 
 BOOST_AUTO_TEST_CASE(assign_and_compare)
