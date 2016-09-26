@@ -53,11 +53,12 @@ namespace pbc
         PairingParam() = default;
         PairingParam(const PairingParam&) = delete;
         ~PairingParam() { backend::pbc_param_clear(_param); }
-        std::string to_str()
+        std::string to_str() const
         {
             std::stringstream buf;
             backend::stream_fd_ptr sfd = backend::streamopen(buf);
-            backend::pbc_param_out_str(sfd->fd, _param);
+            backend::pbc_param_out_str(sfd->fd,
+                                       *(backend::pbc_param_t*)&_param);
             backend::streamclose(sfd);
             return buf.str();
         }
@@ -124,38 +125,50 @@ namespace pbc
             return ptr;
         }
 
-        bool symmetric() { return backend::pairing_is_symmetric(_pairing); }
-        int g1_bytes_length()
+        bool symmetric() const
         {
-            return backend::pairing_length_in_bytes_G1(_pairing);
+            return backend::pairing_is_symmetric(
+                *(backend::pairing_t*)&_pairing);
         }
-        int g1_x_only_bytes_length()
+        int g1_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_x_only_G1(_pairing);
+            return backend::pairing_length_in_bytes_G1(
+                *(backend::pairing_t*)&_pairing);
         }
-        int g1_compressed_bytes_length()
+        int g1_x_only_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_compressed_G1(_pairing);
+            return backend::pairing_length_in_bytes_x_only_G1(
+                *(backend::pairing_t*)&_pairing);
         }
-        int g2_bytes_length()
+        int g1_compressed_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_G2(_pairing);
+            return backend::pairing_length_in_bytes_compressed_G1(
+                *(backend::pairing_t*)&_pairing);
         }
-        int g2_x_only_bytes_length()
+        int g2_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_x_only_G2(_pairing);
+            return backend::pairing_length_in_bytes_G2(
+                *(backend::pairing_t*)&_pairing);
         }
-        int g2_compressed_bytes_length()
+        int g2_x_only_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_compressed_G2(_pairing);
+            return backend::pairing_length_in_bytes_x_only_G2(
+                *(backend::pairing_t*)&_pairing);
         }
-        int gt_bytes_length()
+        int g2_compressed_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_GT(_pairing);
+            return backend::pairing_length_in_bytes_compressed_G2(
+                *(backend::pairing_t*)&_pairing);
         }
-        int zr_bytes_length()
+        int gt_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_Zr(_pairing);
+            return backend::pairing_length_in_bytes_GT(
+                *(backend::pairing_t*)&_pairing);
+        }
+        int zr_bytes_length() const
+        {
+            return backend::pairing_length_in_bytes_Zr(
+                *(backend::pairing_t*)&_pairing);
         }
 
     private:
@@ -219,7 +232,7 @@ namespace pbc
         Element_Init_Func(Zr, zr);
 #undef Element_Init_Func
 
-        ElementType type() { return _type; }
+        ElementType type() const { return _type; }
     private:
         backend::element_t _element;
         ElementType _type;
