@@ -24,6 +24,15 @@ namespace pbc
         NotAllocatedException() : runtime_error("Object is not allocated.") {}
     };
 
+    class AlreadyAllocatedException : public std::runtime_error
+    {
+    public:
+        AlreadyAllocatedException()
+            : runtime_error("Object is already allocated.")
+        {
+        }
+    };
+
     class InitializationError : public std::runtime_error
     {
     public:
