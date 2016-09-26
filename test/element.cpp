@@ -54,4 +54,25 @@ BOOST_AUTO_TEST_CASE(assign_and_compare)
     BOOST_TEST(e1 != e4);
 }
 
+BOOST_AUTO_TEST_CASE(random)
+{
+    Element e;
+    e.init_g1(pairing);
+    e.random();
+    BOOST_TEST(e != 0);
+}
+
+BOOST_AUTO_TEST_CASE(to_and_from_str)
+{
+    Element e1, e2, e3, e4;
+    e1.init_g1(pairing);
+    e2.init_g1(pairing);
+    e3.init_zr(pairing);
+    e4.init_zr(pairing);
+    e1.random();
+    e3 = 42;
+    BOOST_TEST(e2.from_str(e1.to_str()) == e1);
+    BOOST_TEST(e4.from_str(e3.to_str()) == e4);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
