@@ -53,7 +53,6 @@ namespace pbc
         PairingParam() = default;
         PairingParam(const PairingParam&) = delete;
         ~PairingParam() { backend::pbc_param_clear(_param); }
-
         std::string to_str()
         {
             std::stringstream buf;
@@ -108,10 +107,10 @@ namespace pbc
         Pairing() = default;
         Pairing(const Pairing&) = delete;
         ~Pairing() { pairing_clear(_pairing); }
-
         static PairingPtr init_from_param_str(const std::string& param_str)
         {
-            return Pairing::init_from_param(PairingParam::init_from_str(param_str));
+            return Pairing::init_from_param(
+                PairingParam::init_from_str(param_str));
             PairingPtr ptr = std::make_shared<Pairing>();
             if (backend::pairing_init_set_str(ptr->_pairing,
                                               param_str.c_str()) != 0)
