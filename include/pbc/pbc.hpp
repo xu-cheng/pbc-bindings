@@ -272,15 +272,16 @@ namespace pbc
         }
         Element& operator=(const Element& e)
         {
-            if (_type != ElementType::NotInitialized)
+            if (_type != ElementType::NotInitialized && _type != e._type) {
                 backend::element_clear(_element);
-            _type = e._type;
-            if (_type != ElementType::NotInitialized) {
-                backend::element_init_same_as(
-                    _element, *(backend::element_t*)&e._element);
+                if (e._type != ElementType::NotInitialized)
+                    backend::element_init_same_as(
+                        _element, *(backend::element_t*)&e._element);
+            }
+            if (e._type != ElementType::NotInitialized)
                 backend::element_set(_element,
                                      *(backend::element_t*)&e._element);
-            }
+            _type = e._type;
             return *this;
         }
         Element& operator=(int i)
