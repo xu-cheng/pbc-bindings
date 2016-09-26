@@ -426,6 +426,28 @@ namespace pbc
             return out;
         }
 
+        Element operator^(const Element& e) const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (e._type != ElementType::Zr) throw ElementTypeError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_pow_zn(out._element,
+                                    *(backend::element_t*)&_element,
+                                    *(backend::element_t*)&e._element);
+            return out;
+        }
+
+        Element inverse() const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_invert(out._element, *(backend::element_t*)&_element);
+            return out;
+        }
     private:
         backend::element_t _element;
         ElementType _type;
