@@ -32,6 +32,11 @@ namespace pbc
     };
 
     class Pairing;
+    class PairingParam;
+    class Element;
+    typedef std::shared_ptr<Pairing> PairingPtr;
+    typedef std::shared_ptr<PairingParam> PairingParamPtr;
+    typedef std::shared_ptr<Element> ElementPtr;
 
     class PairingParam
     {
@@ -39,7 +44,6 @@ namespace pbc
         PairingParam() = default;
         PairingParam(const PairingParam&) = delete;
         ~PairingParam() { backend::pbc_param_clear(_param); }
-        typedef std::shared_ptr<PairingParam> PairingParamPtr;
 
         std::string to_str()
         {
@@ -89,15 +93,12 @@ namespace pbc
         backend::pbc_param_t _param;
     };
 
-    typedef std::shared_ptr<PairingParam> PairingParamPtr;
-
     class Pairing
     {
     public:
         Pairing() = default;
         Pairing(const Pairing&) = delete;
         ~Pairing() { pairing_clear(_pairing); }
-        typedef std::shared_ptr<Pairing> PairingPtr;
 
         static PairingPtr init_from_param_str(const std::string& param_str)
         {
@@ -152,8 +153,6 @@ namespace pbc
     private:
         backend::pairing_t _pairing;
     };
-
-    typedef std::shared_ptr<Pairing> PairingPtr;
 
     class Element
     {
