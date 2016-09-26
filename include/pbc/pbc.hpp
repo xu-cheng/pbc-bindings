@@ -18,13 +18,13 @@ namespace pbc
 #include <pbc/pbc.h>
     };
 
-    class NotInitializedError: public std::runtime_error
+    class NotInitializedError : public std::runtime_error
     {
     public:
         NotInitializedError() : runtime_error("Object is not initialized.") {}
     };
 
-    class AlreadyInitializedError: public std::runtime_error
+    class AlreadyInitializedError : public std::runtime_error
     {
     public:
         AlreadyInitializedError()
@@ -162,38 +162,37 @@ namespace pbc
         backend::pairing_t _pairing;
     };
 
+    enum class ElementType { G1, G2, GT, Zr, NotInitialized };
+
     class Element
     {
     public:
-        Element() : _allocated(false), _size(0) {}
-        Element(const Element& e) : _allocated(e._allocated), _size(e._size)
+        Element() : _type(ElementType::NotInitialized) {}
+        Element(const Element& e) : _type(e._type)
         {
-            if (_allocated) {
+            if (_type != ElementType::NotInitialized) {
                 backend::element_init_same_as(
                     _element, *(backend::element_t*)&e._element);
                 backend::element_set(_element,
                                      *(backend::element_t*)&e._element);
             }
         }
-        Element(Element&& e) noexcept : _allocated(e._allocated), _size(e._size)
+        Element(Element&& e) noexcept : _type(e._type)
         {
             std::memcpy(&_element[0], &e._element[0],
                         sizeof(backend::element_t));
-            e._allocated = false;
-            e._size = 0;
+            e._type = ElementType::NotInitialized;
         }
         ~Element()
         {
-            if (_allocated) {
+            if (_type != ElementType::NotInitialized) {
                 backend::element_clear(_element);
-                _allocated = false;
-                _size = 0;
+                _type = ElementType::NotInitialized;
             }
         }
 
     private:
-        bool _allocated;
-        std::size_t _size;
         backend::element_t _element;
+        ElementType _type;
     };
 };
