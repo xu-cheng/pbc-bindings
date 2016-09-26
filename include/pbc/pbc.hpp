@@ -159,10 +159,23 @@ namespace pbc
         }
 
     private:
+        friend class Element;
         backend::pairing_t _pairing;
     };
 
     enum class ElementType { G1, G2, GT, Zr, NotInitialized };
+
+    std::ostream& operator<<(std::ostream& o, ElementType type)
+    {
+        switch (type) {
+            case ElementType::G1: o << "G1"; break;
+            case ElementType::G2: o << "G2"; break;
+            case ElementType::GT: o << "GT"; break;
+            case ElementType::Zr: o << "Zr"; break;
+            case ElementType::NotInitialized: o << "NotInitialized"; break;
+        }
+        return o;
+    }
 
     class Element
     {
@@ -191,6 +204,22 @@ namespace pbc
             }
         }
 
+#define Element_Init_Func(type, type_lowercase)                    \
+    void init_##type_lowercase(const PairingPtr pairing)           \
+    {                                                              \
+        if (_type != ElementType::NotInitialized)                  \
+            throw AlreadyInitializedError();                       \
+        backend::element_init_##type(_element, pairing->_pairing); \
+        _type = ElementType::type;                                 \
+    }
+
+        Element_Init_Func(G1, g1);
+        Element_Init_Func(G2, g2);
+        Element_Init_Func(GT, gt);
+        Element_Init_Func(Zr, zr);
+#undef Element_Init_Func
+
+        ElementType type() { return _type; }
     private:
         backend::element_t _element;
         ElementType _type;
