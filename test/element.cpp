@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(move_constructor)
 
 BOOST_AUTO_TEST_CASE(init)
 {
-    Element g1, g2, gt, zr;
+    Element g1, g2, gt, zr, e;
     BOOST_TEST(g1.type() == ElementType::NotInitialized);
     g1.init_g1(pairing);
     BOOST_TEST(g1.type() == ElementType::G1);
@@ -30,6 +30,10 @@ BOOST_AUTO_TEST_CASE(init)
     zr.init_zr(pairing);
     BOOST_TEST(zr.type() == ElementType::Zr);
     BOOST_CHECK_THROW(g1.init_g2(pairing), AlreadyInitializedError);
+    BOOST_CHECK_THROW(e.init_same_as(e), NotInitializedError);
+    e.init_same_as(g1);
+    BOOST_TEST(e.type() == ElementType::G1);
+    BOOST_CHECK_THROW(e.init_same_as(g2), AlreadyInitializedError);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -232,6 +232,17 @@ namespace pbc
         Element_Init_Func(Zr, zr);
 #undef Element_Init_Func
 
+        void init_same_as(const Element& e)
+        {
+            if (_type != ElementType::NotInitialized)
+                throw AlreadyInitializedError();
+            if (e._type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            backend::element_init_same_as(_element,
+                                          *(backend::element_t*)&e._element);
+            _type = e._type;
+        }
+
         ElementType type() const { return _type; }
     private:
         backend::element_t _element;
