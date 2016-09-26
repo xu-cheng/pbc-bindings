@@ -175,6 +175,13 @@ namespace pbc
                                      *(backend::element_t*)&e._element);
             }
         }
+        Element(Element&& e) noexcept : _allocated(e._allocated), _size(e._size)
+        {
+            std::memcpy(&_element[0], &e._element[0],
+                        sizeof(backend::element_t));
+            e._allocated = false;
+            e._size = 0;
+        }
         ~Element()
         {
             if (_allocated) {
