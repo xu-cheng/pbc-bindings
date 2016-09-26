@@ -40,6 +40,12 @@ namespace pbc
         InitializationError(const std::string& msg) : runtime_error(msg) {}
     };
 
+    class ElementTypeError : public std::runtime_error
+    {
+    public:
+        ElementTypeError() : runtime_error("Element has wrong type.") {}
+    }
+
     class Pairing;
     class PairingParam;
     class Element;
@@ -255,6 +261,15 @@ namespace pbc
             backend::streamclose(sfd);
             return buf.str();
         }
+
+        Element& operator=(Element&& e)
+        {
+            std::memcpy(&_element[0], &e._element[0],
+                        sizeof(backend::element_t));
+            _type = e._type;
+            e._type = ElementType::NotInitialized;
+            return *this;
+        }
         Element& operator=(const Element& e)
         {
             if (_type != ElementType::NotInitialized)
@@ -289,6 +304,7 @@ namespace pbc
             backend::element_set_str(_element, s.c_str(), base);
             return *this;
         }
+
         bool operator==(const Element& e) const
         {
             if (_type == ElementType::NotInitialized ||
@@ -311,6 +327,104 @@ namespace pbc
         }
         bool operator!=(const Element& e) const { return !operator==(e); }
         bool operator!=(int i) const { return !operator==(i); }
+        Element operator+(const Element& e) const
+        {
+            if (_type == ElementType::NotInitialized ||
+                e._type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (_type != e._type) throw ElementTypeError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_add(out._element, *(backend::element_t*)&_element,
+                                 *(backend::element_t*)&e._element);
+            return out;
+        }
+        Element operator+=(const Element& e)
+        {
+            operator=(operator+(e));
+            return *this;
+        }
+
+        Element operator-(const Element& e) const
+        {
+            if (_type == ElementType::NotInitialized ||
+                e._type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (_type != e._type) throw ElementTypeError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_sub(out._element, *(backend::element_t*)&_element,
+                                 *(backend::element_t*)&e._element);
+            return out;
+        }
+        Element operator-=(const Element& e)
+        {
+            operator=(operator-(e));
+            return *this;
+        }
+
+        Element operator*(int i) const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_mul_si(out._element,
+                                    *(backend::element_t*)&_element, i);
+            return out;
+        }
+        Element operator*(const Element& e) const
+        {
+            if (_type == ElementType::NotInitialized ||
+                e._type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (e._type != ElementType::Zr) throw ElementTypeError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_mul_zn(out._element,
+                                    *(backend::element_t*)&_element,
+                                    *(backend::element_t*)&e._element);
+            return out;
+        }
+        Element operator*=(int i)
+        {
+            operator=(operator*(i));
+            return *this;
+        }
+        Element operator*=(const Element& e)
+        {
+            operator=(operator*(e));
+            return *this;
+        }
+
+        Element operator/(const Element& e) const
+        {
+            if (_type == ElementType::NotInitialized ||
+                e._type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (_type != e._type) throw ElementTypeError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_div(out._element, *(backend::element_t*)&_element,
+                                 *(backend::element_t*)&e._element);
+            return out;
+        }
+        Element operator/=(const Element& e)
+        {
+            operator=(operator/(e));
+            return *this;
+        }
+
+        Element operator-() const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            Element out;
+            out.init_same_as(*this);
+            backend::element_neg(out._element, *(backend::element_t*)&_element);
+            return out;
+        }
+
     private:
         backend::element_t _element;
         ElementType _type;
