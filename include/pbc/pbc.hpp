@@ -18,17 +18,17 @@ namespace pbc
 #include <pbc/pbc.h>
     };
 
-    class NotAllocatedException : public std::runtime_error
+    class NotInitializedError: public std::runtime_error
     {
     public:
-        NotAllocatedException() : runtime_error("Object is not allocated.") {}
+        NotInitializedError() : runtime_error("Object is not initialized.") {}
     };
 
-    class AlreadyAllocatedException : public std::runtime_error
+    class AlreadyInitializedError: public std::runtime_error
     {
     public:
-        AlreadyAllocatedException()
-            : runtime_error("Object is already allocated.")
+        AlreadyInitializedError()
+            : runtime_error("Object is already initialized.")
         {
         }
     };
