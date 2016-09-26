@@ -1,17 +1,21 @@
 #include "helper.h"
 
 struct Fixture {
-    Fixture()
-    {
-        param = PairingParam::gen_type_a(160, 512);
-        pairing = Pairing::init_from_param(param);
-    }
+    Fixture() { pairing = Pairing::init_from_param_str(TYPE_A_PARAM); }
     ~Fixture() {}
-    PairingParamPtr param;
     PairingPtr pairing;
 };
 
 BOOST_FIXTURE_TEST_SUITE(pairing, Fixture)
+
+BOOST_AUTO_TEST_CASE(move_constructor)
+{
+    Element e1;
+    e1.init_zr(pairing);
+    Element e2 = move(e1);
+    BOOST_TEST(e1.type() == ElementType::NotInitialized);
+    BOOST_TEST(e2.type() == ElementType::Zr);
+}
 
 BOOST_AUTO_TEST_CASE(init)
 {
@@ -25,6 +29,7 @@ BOOST_AUTO_TEST_CASE(init)
     BOOST_TEST(gt.type() == ElementType::GT);
     zr.init_zr(pairing);
     BOOST_TEST(zr.type() == ElementType::Zr);
+    BOOST_CHECK_THROW(g1.init_g2(pairing), AlreadyInitializedError);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

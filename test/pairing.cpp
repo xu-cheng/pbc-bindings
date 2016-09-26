@@ -1,7 +1,7 @@
 #include "helper.h"
 
 struct Fixture {
-    Fixture() { param = PairingParam::gen_type_a(160, 512); }
+    Fixture() { param = PairingParam::init_from_str(TYPE_A_PARAM); }
     ~Fixture() {}
     PairingParamPtr param;
 };
@@ -10,6 +10,8 @@ BOOST_FIXTURE_TEST_SUITE(param, Fixture)
 
 BOOST_AUTO_TEST_CASE(init_from_param_and_str)
 {
+    BOOST_CHECK_THROW(Pairing::init_from_param_str("type a"),
+                      InitializationError);
     PairingPtr pairing1 = Pairing::init_from_param(param);
     PairingPtr pairing2 = Pairing::init_from_param_str(param->to_str());
     BOOST_TEST(pairing1->symmetric() == pairing2->symmetric());
