@@ -8,7 +8,6 @@
 #pragma once
 
 #include <cstdio>
-#include <iostream>
 #include <sstream>
 
 namespace pbc
@@ -38,6 +37,29 @@ namespace pbc
         {
             std::fflush(sfd->fd);
             std::fclose(sfd->fd);
+            delete sfd;
+        }
+#elif defined(__linux__)
+        typedef struct stream_fd {
+            FILE* fd;
+            std::ostream* buf;
+            char* data;
+            size_t size;
+        } stream_fd_t, *stream_fd_ptr;
+
+        inline stream_fd_ptr streamopen(std::ostream& buf)
+        {
+            stream_fd_ptr sfd = new stream_fd_t;
+            sfd->fd = ::open_memstream(&sfd->data, &sfd->size);
+            sfd->buf = &buf;
+            return sfd;
+        }
+
+        inline void streamclose(stream_fd_ptr sfd)
+        {
+            std::fflush(sfd->fd);
+            std::fclose(sfd->fd);
+            sfd->buf->write(sfd->data, sfd->size);
             delete sfd;
         }
 #else
