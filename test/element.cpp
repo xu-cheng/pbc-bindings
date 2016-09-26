@@ -36,4 +36,22 @@ BOOST_AUTO_TEST_CASE(init)
     BOOST_CHECK_THROW(e.init_same_as(g2), AlreadyInitializedError);
 }
 
+BOOST_AUTO_TEST_CASE(assign_and_compare)
+{
+    Element e1, e2, e3, e4;
+    e1.init_zr(pairing);
+    e2.init_zr(pairing);
+    e3.init_zr(pairing);
+    e4.init_g1(pairing);
+    e1 = 0;
+    e2 = e1;
+    e3 = 1;
+    e4 = 0;
+    BOOST_TEST(e1 == e2);
+    BOOST_TEST(e1 == 0);
+    BOOST_TEST(e1 != e3);
+    BOOST_TEST(e1 != 1);
+    BOOST_TEST(e1 != e4);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

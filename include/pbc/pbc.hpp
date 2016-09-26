@@ -244,8 +244,67 @@ namespace pbc
         }
 
         ElementType type() const { return _type; }
+        std::string to_str(int base = 10) const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            std::stringstream buf;
+            backend::stream_fd_ptr sfd = backend::streamopen(buf);
+            backend::element_out_str(sfd->fd, base,
+                                     *(backend::element_t*)&_element);
+            backend::streamclose(sfd);
+            return buf.str();
+        }
+        Element& operator=(const Element& e)
+        {
+            if (_type != ElementType::NotInitialized)
+                backend::element_clear(_element);
+            _type = e._type;
+            if (_type != ElementType::NotInitialized) {
+                backend::element_init_same_as(
+                    _element, *(backend::element_t*)&e._element);
+                backend::element_set(_element,
+                                     *(backend::element_t*)&e._element);
+            }
+            return *this;
+        }
+        Element& operator=(int i)
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            backend::element_set_si(_element, i);
+            return *this;
+        }
+        bool operator==(const Element& e) const
+        {
+            if (_type == ElementType::NotInitialized ||
+                e._type == ElementType::NotInitialized)
+                return false;
+            else if (_type != e._type)
+                return false;
+            else
+                return backend::element_cmp(
+                           *(backend::element_t*)&_element,
+                           *(backend::element_t*)&e._element) == 0;
+        }
+        bool operator==(int i) const
+        {
+            if (_type == ElementType::NotInitialized) return false;
+            Element e;
+            e.init_same_as(*this);
+            e = i;
+            return operator==(e);
+        }
+        bool operator!=(const Element& e) const { return !operator==(e); }
+        bool operator!=(int i) const { return !operator==(i); }
     private:
         backend::element_t _element;
         ElementType _type;
     };
+
+    std::ostream& operator<<(std::ostream& o, const Element& e)
+    {
+        o << e.to_str();
+        return o;
+    }
 };
