@@ -44,7 +44,7 @@ namespace pbc
     {
     public:
         ElementTypeError() : runtime_error("Element has wrong type.") {}
-    }
+    };
 
     class Pairing;
     class PairingParam;
