@@ -233,11 +233,19 @@ namespace pbc
     }
 
         Element_Init_Func(G1, g1);
-        Element_Init_Func(G2, g2);
         Element_Init_Func(GT, gt);
         Element_Init_Func(Zr, zr);
 #undef Element_Init_Func
-
+        void init_g2(const PairingPtr pairing)
+        {
+            if (_type != ElementType::NotInitialized)
+                throw AlreadyInitializedError();
+            backend::element_init_G2(_element, pairing->_pairing);
+            if (pairing->symmetric())
+                _type = ElementType::G1;
+            else
+                _type = ElementType::G2;
+        }
         void init_same_as(const Element& e)
         {
             if (_type != ElementType::NotInitialized)
@@ -445,9 +453,11 @@ namespace pbc
                 throw NotInitializedError();
             Element out;
             out.init_same_as(*this);
-            backend::element_invert(out._element, *(backend::element_t*)&_element);
+            backend::element_invert(out._element,
+                                    *(backend::element_t*)&_element);
             return out;
         }
+
     private:
         backend::element_t _element;
         ElementType _type;

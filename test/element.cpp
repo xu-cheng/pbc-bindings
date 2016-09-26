@@ -19,12 +19,10 @@ BOOST_AUTO_TEST_CASE(move_constructor)
 
 BOOST_AUTO_TEST_CASE(init)
 {
-    Element g1, g2, gt, zr, e;
+    Element g1, gt, zr, e;
     BOOST_TEST(g1.type() == ElementType::NotInitialized);
     g1.init_g1(pairing);
     BOOST_TEST(g1.type() == ElementType::G1);
-    g2.init_g2(pairing);
-    BOOST_TEST(g2.type() == ElementType::G2);
     gt.init_gt(pairing);
     BOOST_TEST(gt.type() == ElementType::GT);
     zr.init_zr(pairing);
@@ -33,7 +31,21 @@ BOOST_AUTO_TEST_CASE(init)
     BOOST_CHECK_THROW(e.init_same_as(e), NotInitializedError);
     e.init_same_as(g1);
     BOOST_TEST(e.type() == ElementType::G1);
-    BOOST_CHECK_THROW(e.init_same_as(g2), AlreadyInitializedError);
+    BOOST_CHECK_THROW(e.init_same_as(g1), AlreadyInitializedError);
+}
+
+BOOST_AUTO_TEST_CASE(init_g2)
+{
+    Element e1;
+    e1.init_g2(pairing);
+    BOOST_TEST(e1.type() == ElementType::G1);
+    PairingParamPtr pp = PairingParam::gen_type_f();
+    PairingPtr p = Pairing::init_from_param(pp);
+    {
+        Element e2;
+        e2.init_g2(p);
+        BOOST_TEST(e2.type() == ElementType::G2);
+    }
 }
 
 BOOST_AUTO_TEST_CASE(assign_and_compare)
