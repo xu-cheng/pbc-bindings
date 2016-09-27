@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 def SystemIncludePathasFlags():
@@ -10,7 +9,6 @@ def SystemIncludePathasFlags():
     out = [p.strip() for p in out if not p.endswith("(framework directory)")]
     flags = [["-isystem", p] for p in out]
     return [f for ff in flags for f in ff]
-
 
 def FlagsForFile(filename, **kwargs):
     flags = [
