@@ -12,7 +12,7 @@
 
 namespace pbc
 {
-    namespace backend
+    namespace streamopen
     {
 #if defined(__APPLE__) || defined(__FreeBSD__)
         typedef struct stream_fd {
@@ -82,7 +82,7 @@ namespace pbc
             int count;
             std::fflush(sfd->fd);
             std::rewind(sfd->fd);
-            while((count = std::fread(buf, sizeof(char), 1024, sfd->fd)) > 0)
+            while ((count = std::fread(buf, sizeof(char), 1024, sfd->fd)) > 0)
                 sfd->buf->write(buf, count);
             std::fclose(sfd->fd);
             delete sfd;

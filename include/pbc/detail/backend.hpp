@@ -7,6 +7,10 @@
 
 #pragma once
 
-#include "./detail/element.hpp"
-#include "./detail/pairing.hpp"
-#include "./detail/pairing_param.hpp"
+namespace pbc
+{
+    namespace backend
+    {
+#include <pbc/pbc.h>
+    };
+};
