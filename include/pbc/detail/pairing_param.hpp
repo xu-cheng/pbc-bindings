@@ -28,8 +28,7 @@ namespace pbc
         {
             std::stringstream buf;
             streamopen::stream_fd_ptr sfd = streamopen::streamopen(buf);
-            backend::pbc_param_out_str(sfd->fd,
-                                       *(backend::pbc_param_t*)&_param);
+            backend::pbc_param_out_str(sfd->fd, c_param());
             streamopen::streamclose(sfd);
             return buf.str();
         }

@@ -47,48 +47,39 @@ namespace pbc
         }
         bool symmetric() const
         {
-            return backend::pairing_is_symmetric(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_is_symmetric(c_pairing());
         }
         int g1_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_G1(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_G1(c_pairing());
         }
         int g1_x_only_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_x_only_G1(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_x_only_G1(c_pairing());
         }
         int g1_compressed_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_compressed_G1(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_compressed_G1(c_pairing());
         }
         int g2_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_G2(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_G2(c_pairing());
         }
         int g2_x_only_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_x_only_G2(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_x_only_G2(c_pairing());
         }
         int g2_compressed_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_compressed_G2(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_compressed_G2(c_pairing());
         }
         int gt_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_GT(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_GT(c_pairing());
         }
         int zr_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_Zr(
-                *(backend::pairing_t*)&_pairing);
+            return backend::pairing_length_in_bytes_Zr(c_pairing());
         }
 
     private:

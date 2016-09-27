@@ -28,10 +28,8 @@ namespace pbc
         Element(const Element& e) : _type(e._type), _pairing(e._pairing)
         {
             if (_type != ElementType::NotInitialized) {
-                backend::element_init_same_as(
-                    _element, *(backend::element_t*)&e._element);
-                backend::element_set(_element,
-                                     *(backend::element_t*)&e._element);
+                backend::element_init_same_as(_element, e.c_element());
+                backend::element_set(_element, e.c_element());
             }
         }
         Element(Element&& e) noexcept : _type(e._type), _pairing(e._pairing)
@@ -78,21 +76,23 @@ namespace pbc
                 throw AlreadyInitializedError();
             if (e._type == ElementType::NotInitialized)
                 throw NotInitializedError();
-            backend::element_init_same_as(_element,
-                                          *(backend::element_t*)&e._element);
+            backend::element_init_same_as(_element, e.c_element());
             _type = e._type;
             _pairing = e._pairing;
         }
 
         ElementType type() const { return _type; }
+        backend::element_ptr c_element() const
+        {
+            return (backend::element_ptr)&_element[0];
+        }
         std::string to_str(int base = 10) const
         {
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
             std::stringstream buf;
             streamopen::stream_fd_ptr sfd = streamopen::streamopen(buf);
-            backend::element_out_str(sfd->fd, base,
-                                     *(backend::element_t*)&_element);
+            backend::element_out_str(sfd->fd, base, c_element());
             streamopen::streamclose(sfd);
             return buf.str();
         }
@@ -110,12 +110,10 @@ namespace pbc
             if (_type != ElementType::NotInitialized && _type != e._type) {
                 backend::element_clear(_element);
                 if (e._type != ElementType::NotInitialized)
-                    backend::element_init_same_as(
-                        _element, *(backend::element_t*)&e._element);
+                    backend::element_init_same_as(_element, e.c_element());
             }
             if (e._type != ElementType::NotInitialized)
-                backend::element_set(_element,
-                                     *(backend::element_t*)&e._element);
+                backend::element_set(_element, e.c_element());
             _type = e._type;
             _pairing = e._pairing;
             return *this;
@@ -150,9 +148,7 @@ namespace pbc
             else if (_type != e._type)
                 return false;
             else
-                return backend::element_cmp(
-                           *(backend::element_t*)&_element,
-                           *(backend::element_t*)&e._element) == 0;
+                return backend::element_cmp(c_element(), e.c_element()) == 0;
         }
         bool operator==(int i) const
         {
@@ -172,8 +168,7 @@ namespace pbc
             if (_type != e._type) throw ElementTypeError();
             Element out;
             out.init_same_as(*this);
-            backend::element_add(out._element, *(backend::element_t*)&_element,
-                                 *(backend::element_t*)&e._element);
+            backend::element_add(out._element, c_element(), e.c_element());
             return out;
         }
         Element operator+=(const Element& e)
@@ -190,8 +185,7 @@ namespace pbc
             if (_type != e._type) throw ElementTypeError();
             Element out;
             out.init_same_as(*this);
-            backend::element_sub(out._element, *(backend::element_t*)&_element,
-                                 *(backend::element_t*)&e._element);
+            backend::element_sub(out._element, c_element(), e.c_element());
             return out;
         }
         Element operator-=(const Element& e)
@@ -206,8 +200,7 @@ namespace pbc
                 throw NotInitializedError();
             Element out;
             out.init_same_as(*this);
-            backend::element_mul_si(out._element,
-                                    *(backend::element_t*)&_element, i);
+            backend::element_mul_si(out._element, c_element(), i);
             return out;
         }
         Element operator*(const Element& e) const
@@ -218,9 +211,7 @@ namespace pbc
             if (e._type != ElementType::Zr) throw ElementTypeError();
             Element out;
             out.init_same_as(*this);
-            backend::element_mul_zn(out._element,
-                                    *(backend::element_t*)&_element,
-                                    *(backend::element_t*)&e._element);
+            backend::element_mul_zn(out._element, c_element(), e.c_element());
             return out;
         }
         Element operator*=(int i)
@@ -242,8 +233,7 @@ namespace pbc
             if (_type != e._type) throw ElementTypeError();
             Element out;
             out.init_same_as(*this);
-            backend::element_div(out._element, *(backend::element_t*)&_element,
-                                 *(backend::element_t*)&e._element);
+            backend::element_div(out._element, c_element(), e.c_element());
             return out;
         }
         Element operator/=(const Element& e)
@@ -258,7 +248,7 @@ namespace pbc
                 throw NotInitializedError();
             Element out;
             out.init_same_as(*this);
-            backend::element_neg(out._element, *(backend::element_t*)&_element);
+            backend::element_neg(out._element, c_element());
             return out;
         }
 
@@ -269,9 +259,7 @@ namespace pbc
             if (e._type != ElementType::Zr) throw ElementTypeError();
             Element out;
             out.init_same_as(*this);
-            backend::element_pow_zn(out._element,
-                                    *(backend::element_t*)&_element,
-                                    *(backend::element_t*)&e._element);
+            backend::element_pow_zn(out._element, c_element(), e.c_element());
             return out;
         }
 
@@ -281,8 +269,7 @@ namespace pbc
                 throw NotInitializedError();
             Element out;
             out.init_same_as(*this);
-            backend::element_invert(out._element,
-                                    *(backend::element_t*)&_element);
+            backend::element_invert(out._element, c_element());
             return out;
         }
 
