@@ -1,11 +1,12 @@
 CMAKE_BUILD_TYPE := RelWithDebInfo
+CMAKE_BUILD_OPTIONS := -DENABLE_TEST=ON
 
 build: cmake
 	cd build && $(MAKE)
 
 cmake:
 	mkdir -p build
-	cd build && cmake .. -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+	cd build && cmake .. -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} ${CMAKE_BUILD_OPTIONS}
 
 clean:
 	rm -rf build

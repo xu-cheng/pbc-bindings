@@ -16,6 +16,10 @@ list(APPEND linked_libraries ${PBC_LIBRARIES})
 # enable c++14.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
-# add unit test
-enable_testing()
-add_subdirectory(test)
+# option to enable test
+option(ENABLE_TEST "Enable test" OFF)
+
+if(ENABLE_TEST)
+    enable_testing()
+    add_subdirectory(test)
+endif()
