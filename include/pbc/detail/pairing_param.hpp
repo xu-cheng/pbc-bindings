@@ -23,7 +23,7 @@ namespace pbc
     public:
         PairingParam() = default;
         PairingParam(const PairingParam&) = delete;
-        ~PairingParam() { backend::pbc_param_clear(_param); }
+        ~PairingParam() { backend::pbc_param_clear(&_param); }
         std::string to_str() const
         {
             std::stringstream buf;
@@ -35,12 +35,12 @@ namespace pbc
         }
         const backend::pbc_param_s* c_param() const
         {
-            return (const backend::pbc_param_s*)&_param[0];
+            return (const backend::pbc_param_s*)&_param;
         }
         static PairingParamPtr init_from_str(const std::string& param_str)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();
-            if (backend::pbc_param_init_set_str(ptr->_param,
+            if (backend::pbc_param_init_set_str(&ptr->_param,
                                                 param_str.c_str()) != 0)
                 throw InitializationError(
                     "Failed to initialize pairing parameter.");
@@ -49,29 +49,29 @@ namespace pbc
         static PairingParamPtr gen_type_a(int rbits = 160, int qbits = 512)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();
-            backend::pbc_param_init_a_gen(ptr->_param, rbits, qbits);
+            backend::pbc_param_init_a_gen(&ptr->_param, rbits, qbits);
             return ptr;
         }
         static PairingParamPtr gen_type_i(int group_size = 696)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();
-            backend::pbc_param_init_i_gen(ptr->_param, group_size);
+            backend::pbc_param_init_i_gen(&ptr->_param, group_size);
             return ptr;
         }
         static PairingParamPtr gen_type_e(int rbits = 160, int qbits = 1024)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();
-            backend::pbc_param_init_e_gen(ptr->_param, rbits, qbits);
+            backend::pbc_param_init_e_gen(&ptr->_param, rbits, qbits);
             return ptr;
         }
         static PairingParamPtr gen_type_f(int bits = 160)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();
-            backend::pbc_param_init_f_gen(ptr->_param, bits);
+            backend::pbc_param_init_f_gen(&ptr->_param, bits);
             return ptr;
         }
 
     private:
-        backend::pbc_param_t _param;
+        backend::pbc_param_s _param;
     };
 }

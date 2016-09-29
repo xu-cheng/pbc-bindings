@@ -23,13 +23,13 @@ namespace pbc
     public:
         Pairing() = default;
         Pairing(const Pairing&) = delete;
-        ~Pairing() { pairing_clear(_pairing); }
+        ~Pairing() { pairing_clear(&_pairing); }
         static PairingPtr init_from_param_str(const std::string& param_str)
         {
             return Pairing::init_from_param(
                 PairingParam::init_from_str(param_str));
             PairingPtr ptr = std::make_shared<Pairing>();
-            if (backend::pairing_init_set_str(ptr->_pairing,
+            if (backend::pairing_init_set_str(&ptr->_pairing,
                                               param_str.c_str()) != 0)
                 throw InitializationError("Failed to initialize pairing.");
             return ptr;
@@ -38,14 +38,14 @@ namespace pbc
         {
             PairingPtr ptr = std::make_shared<Pairing>();
             backend::pairing_init_pbc_param(
-                ptr->_pairing,
+                &ptr->_pairing,
                 const_cast<backend::pbc_param_s*>(param->c_param()));
             return ptr;
         }
 
         const backend::pairing_s* c_pairing() const
         {
-            return (backend::pairing_s*)&_pairing[0];
+            return (backend::pairing_s*)&_pairing;
         }
         bool symmetric() const
         {
@@ -94,6 +94,6 @@ namespace pbc
         }
 
     private:
-        backend::pairing_t _pairing;
+        backend::pairing_s _pairing;
     };
 };
