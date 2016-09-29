@@ -13,6 +13,10 @@ find_package(PBC REQUIRED)
 include_directories(${PBC_INCLUDE_DIRS})
 list(APPEND linked_libraries ${PBC_LIBRARIES})
 
+find_package(GMP REQUIRED)
+include_directories(${GMP_INCLUDE_DIRS})
+list(APPEND linked_libraries ${GMP_LIBRARIES})
+
 # enable c++14.
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
