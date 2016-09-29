@@ -212,10 +212,9 @@ namespace pbc
             if (_type == ElementType::NotInitialized ||
                 e._type == ElementType::NotInitialized)
                 throw NotInitializedError();
-            if (e._type != ElementType::Zr) throw ElementTypeError();
             Element out;
             out.init_same_as(*this);
-            backend::element_mul_zn(
+            backend::element_mul(
                 &out._element, const_cast<backend::element_s*>(c_element()),
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
