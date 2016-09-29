@@ -186,8 +186,7 @@ namespace pbc
         }
         Element operator+=(const Element& e)
         {
-            operator=(operator+(e));
-            return *this;
+            return operator=(operator+(e));
         }
 
         Element operator-(const Element& e) const
@@ -205,8 +204,7 @@ namespace pbc
         }
         Element operator-=(const Element& e)
         {
-            operator=(operator-(e));
-            return *this;
+            return operator=(operator-(e));
         }
 
         Element operator*(int i) const
@@ -234,13 +232,11 @@ namespace pbc
         }
         Element operator*=(int i)
         {
-            operator=(operator*(i));
-            return *this;
+            return operator=(operator*(i));
         }
         Element operator*=(const Element& e)
         {
-            operator=(operator*(e));
-            return *this;
+            return operator=(operator*(e));
         }
 
         Element operator/(const Element& e) const
@@ -258,8 +254,7 @@ namespace pbc
         }
         Element operator/=(const Element& e)
         {
-            operator=(operator/(e));
-            return *this;
+            return operator=(operator/(e));
         }
 
         Element operator-() const
