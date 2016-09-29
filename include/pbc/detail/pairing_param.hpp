@@ -28,13 +28,14 @@ namespace pbc
         {
             std::stringstream buf;
             streamopen::stream_fd_ptr sfd = streamopen::streamopen(buf);
-            backend::pbc_param_out_str(sfd->fd, c_param());
+            backend::pbc_param_out_str(
+                sfd->fd, const_cast<backend::pbc_param_ptr>(c_param()));
             streamopen::streamclose(sfd);
             return buf.str();
         }
-        backend::pbc_param_ptr c_param() const
+        const backend::pbc_param_s* c_param() const
         {
-            return (backend::pbc_param_ptr)&_param[0];
+            return (const backend::pbc_param_s*)&_param[0];
         }
         static PairingParamPtr init_from_str(const std::string& param_str)
         {

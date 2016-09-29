@@ -37,49 +37,60 @@ namespace pbc
         static PairingPtr init_from_param(const PairingParamPtr& param)
         {
             PairingPtr ptr = std::make_shared<Pairing>();
-            backend::pairing_init_pbc_param(ptr->_pairing, param->c_param());
+            backend::pairing_init_pbc_param(
+                ptr->_pairing,
+                const_cast<backend::pbc_param_s*>(param->c_param()));
             return ptr;
         }
 
-        backend::pairing_ptr c_pairing() const
+        const backend::pairing_s* c_pairing() const
         {
-            return (backend::pairing_ptr)&_pairing[0];
+            return (backend::pairing_s*)&_pairing[0];
         }
         bool symmetric() const
         {
-            return backend::pairing_is_symmetric(c_pairing());
+            return backend::pairing_is_symmetric(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int g1_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_G1(c_pairing());
+            return backend::pairing_length_in_bytes_G1(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int g1_x_only_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_x_only_G1(c_pairing());
+            return backend::pairing_length_in_bytes_x_only_G1(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int g1_compressed_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_compressed_G1(c_pairing());
+            return backend::pairing_length_in_bytes_compressed_G1(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int g2_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_G2(c_pairing());
+            return backend::pairing_length_in_bytes_G2(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int g2_x_only_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_x_only_G2(c_pairing());
+            return backend::pairing_length_in_bytes_x_only_G2(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int g2_compressed_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_compressed_G2(c_pairing());
+            return backend::pairing_length_in_bytes_compressed_G2(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int gt_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_GT(c_pairing());
+            return backend::pairing_length_in_bytes_GT(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
         int zr_bytes_length() const
         {
-            return backend::pairing_length_in_bytes_Zr(c_pairing());
+            return backend::pairing_length_in_bytes_Zr(
+                const_cast<backend::pairing_s*>(c_pairing()));
         }
 
     private:
