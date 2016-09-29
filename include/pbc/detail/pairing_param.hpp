@@ -35,7 +35,7 @@ namespace pbc
         }
         const backend::pbc_param_s* c_param() const
         {
-            return (const backend::pbc_param_s*)&_param;
+            return &_param;
         }
         static PairingParamPtr init_from_str(const std::string& param_str)
         {

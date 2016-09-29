@@ -89,7 +89,7 @@ namespace pbc
         ElementType type() const { return _type; }
         const backend::element_s* c_element() const
         {
-            return (backend::element_s*)&_element;
+            return &_element;
         }
         std::string to_str(int base = 10) const
         {
