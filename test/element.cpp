@@ -12,9 +12,12 @@ BOOST_AUTO_TEST_CASE(move_constructor)
 {
     Element e1;
     e1.init_zr(pairing);
-    Element e2 = move(e1);
+    Element e2(move(e1));
     BOOST_TEST(e1.type() == ElementType::NotInitialized);
     BOOST_TEST(e2.type() == ElementType::Zr);
+    Element e3 = move(e2);
+    BOOST_TEST(e2.type() == ElementType::NotInitialized);
+    BOOST_TEST(e3.type() == ElementType::Zr);
 }
 
 BOOST_AUTO_TEST_CASE(init)
@@ -61,6 +64,13 @@ BOOST_AUTO_TEST_CASE(assign_and_compare)
     BOOST_TEST(e1 != e3);
     BOOST_TEST(e1 != 1);
     BOOST_TEST(e1 != e4);
+    e4 = e1;
+    BOOST_TEST(e1 == e4);
+
+    Element e5, e6;
+    e5 = e1;
+    BOOST_TEST(e5 == e1);
+    BOOST_CHECK_THROW(e6 = 1, NotInitializedError);
 }
 
 BOOST_AUTO_TEST_CASE(random)
@@ -81,7 +91,80 @@ BOOST_AUTO_TEST_CASE(to_and_from_str)
     e1.random();
     e3 = 42;
     BOOST_TEST(e2.from_str(e1.to_str()) == e1);
-    BOOST_TEST(e4.from_str(e3.to_str()) == e4);
+    BOOST_TEST(e4.from_str(e3.to_str(16), 16) == e4);
+
+    Element e;
+    BOOST_CHECK_THROW(e.to_str(), NotInitializedError);
+    BOOST_CHECK_THROW(e.from_str(""), NotInitializedError);
+}
+
+BOOST_AUTO_TEST_CASE(random_method)
+{
+    Element e;
+    BOOST_CHECK_THROW(e.random(), NotInitializedError);
+    e.init_zr(pairing);
+    e.random();
+    BOOST_TEST(e != 0);
+}
+
+BOOST_AUTO_TEST_CASE(arithmetic)
+{
+    Element e1, e2, e3, e4;
+    e1.init_g1(pairing);
+    e2.init_zr(pairing);
+    e3.init_zr(pairing);
+    e1.random();
+    e2 = 7;
+    e3 = 6;
+
+    BOOST_CHECK_THROW(e4 + e1, NotInitializedError);
+    BOOST_CHECK_THROW(e4 - e1, NotInitializedError);
+    BOOST_CHECK_THROW(e4 * e2, NotInitializedError);
+    BOOST_CHECK_THROW(e4 * 2, NotInitializedError);
+    BOOST_CHECK_THROW(e4 / e1, NotInitializedError);
+    BOOST_CHECK_THROW(e4.pow(e2), NotInitializedError);
+    BOOST_CHECK_THROW(e4 += e1, NotInitializedError);
+    BOOST_CHECK_THROW(e4 -= e1, NotInitializedError);
+    BOOST_CHECK_THROW(e4 *= e2, NotInitializedError);
+    BOOST_CHECK_THROW(e4 *= 2, NotInitializedError);
+    BOOST_CHECK_THROW(e4 /= e1, NotInitializedError);
+
+    BOOST_CHECK_THROW(e2 + e1, ElementTypeError);
+    BOOST_CHECK_THROW(e2 - e1, ElementTypeError);
+    BOOST_CHECK_THROW(e2 / e1, ElementTypeError);
+    BOOST_CHECK_THROW(e2 += e1, ElementTypeError);
+    BOOST_CHECK_THROW(e2 -= e1, ElementTypeError);
+    BOOST_CHECK_THROW(e2 /= e1, ElementTypeError);
+
+    BOOST_TEST(e2 + e3 == 13);
+    e2 += e3;
+    BOOST_TEST(e2 == 13);
+    BOOST_TEST(e2 - e3 == 7);
+    e2 -= e3;
+    BOOST_TEST(e2 == 7);
+    BOOST_TEST(e2 * e3 == 42);
+    e2 *= e3;
+    BOOST_TEST(e2 == 42);
+    BOOST_TEST(e2 / e3 == 7);
+    e2 /= e3;
+    BOOST_TEST(e2 == 7);
+    e2 = e2.pow(e3);
+    BOOST_TEST(e2 == 117649);
+    BOOST_TEST(-e3 == -6);
+}
+
+BOOST_AUTO_TEST_CASE(inverse)
+{
+    Element e1, e2;
+    e1.init_zr(pairing);
+    e2.init_zr(pairing);
+    e1 = 2;
+    e2 = 89;
+    e1 = e1.pow(e2);
+    e2 = 1;
+    e1 -= e2;
+    e1 = e1.inverse();
+    BOOST_TEST(e1.to_str(16) == "6de0243f778127dbbe487f6f0221fb7c090fede0");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
