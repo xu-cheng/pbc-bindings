@@ -246,7 +246,7 @@ namespace pbc
             return out;
         }
 
-        Element operator^(const Element& e) const
+        Element pow(const Element& e) const
         {
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
