@@ -182,7 +182,7 @@ namespace pbc
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
         }
-        Element operator+=(const Element& e) { return operator=(operator+(e)); }
+        Element& operator+=(const Element& e) { return operator=(operator+(e)); }
         Element operator-(const Element& e) const
         {
             if (_type == ElementType::NotInitialized ||
@@ -196,7 +196,7 @@ namespace pbc
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
         }
-        Element operator-=(const Element& e) { return operator=(operator-(e)); }
+        Element& operator-=(const Element& e) { return operator=(operator-(e)); }
         Element operator*(int i) const
         {
             if (_type == ElementType::NotInitialized)
@@ -219,8 +219,8 @@ namespace pbc
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
         }
-        Element operator*=(int i) { return operator=(operator*(i)); }
-        Element operator*=(const Element& e) { return operator=(operator*(e)); }
+        Element& operator*=(int i) { return operator=(operator*(i)); }
+        Element& operator*=(const Element& e) { return operator=(operator*(e)); }
         Element operator/(const Element& e) const
         {
             if (_type == ElementType::NotInitialized ||
@@ -234,7 +234,7 @@ namespace pbc
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
         }
-        Element operator/=(const Element& e) { return operator=(operator/(e)); }
+        Element& operator/=(const Element& e) { return operator=(operator/(e)); }
         Element operator-() const
         {
             if (_type == ElementType::NotInitialized)
