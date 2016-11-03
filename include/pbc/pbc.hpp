@@ -8,5 +8,4 @@
 #pragma once
 
 #include "./detail/element.hpp"
-#include "./detail/pairing.hpp"
-#include "./detail/pairing_param.hpp"
+#include "./detail/element_pairing.hpp"

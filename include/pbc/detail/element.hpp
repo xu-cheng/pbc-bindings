@@ -87,6 +87,7 @@ namespace pbc
         }
 
         ElementType type() const { return _type; }
+        PairingPtr pairing() const { return _pairing; }
         const backend::element_s* c_element() const { return &_element; }
         std::string to_str(int base = 10) const
         {
@@ -281,6 +282,8 @@ namespace pbc
                 &out._element, const_cast<backend::element_s*>(c_element()));
             return out;
         }
+
+        friend Element e(const Element&, const Element&);
 
     private:
         backend::element_s _element;
