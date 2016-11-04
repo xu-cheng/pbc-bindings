@@ -19,6 +19,7 @@ namespace pbc
 {
     class Element;
     class FixedG1Pairing;
+    class FixedBasePower;
 
     typedef std::shared_ptr<Element> ElementPtr;
 
@@ -291,6 +292,7 @@ namespace pbc
             Element>::type
         e_prod(const Container&, const Container&);
         friend FixedG1Pairing;
+        friend FixedBasePower;
 
     private:
         backend::element_s _element;

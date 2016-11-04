@@ -9,3 +9,4 @@
 
 #include "./detail/element.hpp"
 #include "./detail/element_pairing.hpp"
+#include "./detail/element_power.hpp"
