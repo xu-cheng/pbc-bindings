@@ -44,8 +44,10 @@ BOOST_AUTO_TEST_CASE(element_pairing_prod)
 
 BOOST_AUTO_TEST_CASE(element_pairing_fixed_g1)
 {
-    Element e1, e2;
-    BOOST_CHECK_THROW(FixedG1Pairing a(e1), ElementTypeError);
+    Element e1, e2, zr;
+    BOOST_CHECK_THROW(FixedG1Pairing a(e1), NotInitializedError);
+    zr.init_zr(pairing);
+    BOOST_CHECK_THROW(FixedG1Pairing b(zr), ElementTypeError);
     e1.init_g1(pairing);
     e1.random();
     FixedG1Pairing p(e1);

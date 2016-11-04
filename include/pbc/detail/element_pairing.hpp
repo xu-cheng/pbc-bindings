@@ -79,7 +79,10 @@ namespace pbc
     public:
         FixedG1Pairing(const Element& g1)
         {
-            if (g1.type() != ElementType::G1) throw ElementTypeError();
+            if (g1.type() == ElementType::NotInitialized)
+                throw NotInitializedError();
+            else if (g1.type() != ElementType::G1)
+                throw ElementTypeError();
             _pairing = g1.pairing();
             backend::pairing_pp_init(
                 &_pairing_pp, const_cast<backend::element_s*>(g1.c_element()),
