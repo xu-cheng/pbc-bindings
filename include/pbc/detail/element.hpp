@@ -284,6 +284,11 @@ namespace pbc
         }
 
         friend Element e(const Element&, const Element&);
+        template <typename Container>
+        friend typename std::enable_if<
+            std::is_same<typename Container::value_type, Element>::value,
+            Element>::type
+        e_prod(const Container&, const Container&);
 
     private:
         backend::element_s _element;
