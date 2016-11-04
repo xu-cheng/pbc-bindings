@@ -16,17 +16,17 @@
 
 namespace pbc
 {
-    Element e(const Element& g, const Element& h)
+    Element e(const Element& g1, const Element& g2)
     {
-        if (g.type() == ElementType::NotInitialized ||
-            h.type() == ElementType::NotInitialized)
+        if (g1.type() == ElementType::NotInitialized ||
+            g2.type() == ElementType::NotInitialized)
             throw NotInitializedError();
 
         Element out;
-        out.init_gt(g.pairing());
+        out.init_gt(g1.pairing());
         backend::element_pairing(
-            &out._element, const_cast<backend::element_s*>(g.c_element()),
-            const_cast<backend::element_s*>(h.c_element()));
+            &out._element, const_cast<backend::element_s*>(g1.c_element()),
+            const_cast<backend::element_s*>(g2.c_element()));
         return out;
     }
 
@@ -69,4 +69,38 @@ namespace pbc
         delete[] _in2;
         return out;
     }
+
+    class FixedG1Pairing;
+
+    typedef std::shared_ptr<FixedG1Pairing> FixedG1PairingPtr;
+
+    class FixedG1Pairing
+    {
+    public:
+        FixedG1Pairing(const Element& g1)
+        {
+            if (g1.type() != ElementType::G1) throw ElementTypeError();
+            _pairing = g1.pairing();
+            backend::pairing_pp_init(
+                &_pairing_pp, const_cast<backend::element_s*>(g1.c_element()),
+                const_cast<backend::pairing_s*>(_pairing->c_pairing()));
+        }
+        FixedG1Pairing(const FixedG1Pairing&) = delete;
+        ~FixedG1Pairing() { backend::pairing_pp_clear(&_pairing_pp); }
+        Element apply(const Element& g2) const
+        {
+            if (g2.type() == ElementType::NotInitialized)
+                throw NotInitializedError();
+            Element out;
+            out.init_gt(_pairing);
+            backend::pairing_pp_apply(
+                &out._element, const_cast<backend::element_s*>(g2.c_element()),
+                const_cast<backend::pairing_pp_s*>(&_pairing_pp));
+            return out;
+        }
+
+    private:
+        PairingPtr _pairing;
+        backend::pairing_pp_s _pairing_pp;
+    };
 };

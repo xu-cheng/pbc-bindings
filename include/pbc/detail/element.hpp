@@ -18,6 +18,7 @@
 namespace pbc
 {
     class Element;
+    class FixedG1Pairing;
 
     typedef std::shared_ptr<Element> ElementPtr;
 
@@ -289,6 +290,7 @@ namespace pbc
             std::is_same<typename Container::value_type, Element>::value,
             Element>::type
         e_prod(const Container&, const Container&);
+        friend FixedG1Pairing;
 
     private:
         backend::element_s _element;

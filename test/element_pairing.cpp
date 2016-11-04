@@ -42,4 +42,17 @@ BOOST_AUTO_TEST_CASE(element_pairing_prod)
     BOOST_TEST(et1 == et2 * et2);
 }
 
+BOOST_AUTO_TEST_CASE(element_pairing_fixed_g1)
+{
+    Element e1, e2;
+    BOOST_CHECK_THROW(FixedG1Pairing a(e1), ElementTypeError);
+    e1.init_g1(pairing);
+    e1.random();
+    FixedG1Pairing p(e1);
+    BOOST_CHECK_THROW(p.apply(e2), NotInitializedError);
+    e2.init_g2(pairing);
+    e2.random();
+    BOOST_TEST(p.apply(e2) == e(e1, e2));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
