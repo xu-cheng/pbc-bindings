@@ -87,6 +87,15 @@ namespace pbc
             backend::element_set_si(&out._element, value);
             return out;
         }
+        static Element from_str(const PairingPtr& pairing,
+                                const ElementType& type,
+                                const std::string& data, int base = 10)
+        {
+            if (type == ElementType::NotInitialized) throw ElementTypeError();
+            Element out(pairing, type);
+            backend::element_set_str(&out._element, data.c_str(), base);
+            return out;
+        }
 
 #define Element_Init_Func(type, type_lowercase)                                \
     void init_##type_lowercase(const PairingPtr& pairing)                      \
@@ -179,13 +188,6 @@ namespace pbc
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
             backend::element_random(&_element);
-            return *this;
-        }
-        Element& from_str(const std::string& s, int base = 10)
-        {
-            if (_type == ElementType::NotInitialized)
-                throw NotInitializedError();
-            backend::element_set_str(&_element, s.c_str(), base);
             return *this;
         }
 
