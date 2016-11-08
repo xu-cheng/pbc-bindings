@@ -50,7 +50,7 @@ namespace pbc
         }
 
 #define Element_Init_Func(type, type_lowercase)                                \
-    void init_##type_lowercase(const PairingPtr pairing)                       \
+    void init_##type_lowercase(const PairingPtr& pairing)                       \
     {                                                                          \
         if (_type != ElementType::NotInitialized)                              \
             throw AlreadyInitializedError();                                   \
@@ -64,7 +64,7 @@ namespace pbc
         Element_Init_Func(GT, gt);
         Element_Init_Func(Zr, zr);
 #undef Element_Init_Func
-        void init_g2(const PairingPtr pairing)
+        void init_g2(const PairingPtr& pairing)
         {
             if (_type != ElementType::NotInitialized)
                 throw AlreadyInitializedError();
