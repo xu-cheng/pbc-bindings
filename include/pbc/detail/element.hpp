@@ -27,6 +27,35 @@ namespace pbc
     {
     public:
         Element() : _type(ElementType::NotInitialized), _pairing(nullptr) {}
+        Element(const PairingPtr& pairing, const ElementType& type)
+            : _type(type), _pairing(pairing)
+        {
+            switch (type) {
+                case ElementType::G1:
+                    backend::element_init_G1(
+                        &_element,
+                        const_cast<backend::pairing_s*>(pairing->c_pairing()));
+                    break;
+                case ElementType::G2:
+                    backend::element_init_G2(
+                        &_element,
+                        const_cast<backend::pairing_s*>(pairing->c_pairing()));
+
+                    if (pairing->symmetric()) _type = ElementType::G1;
+                    break;
+                case ElementType::GT:
+                    backend::element_init_GT(
+                        &_element,
+                        const_cast<backend::pairing_s*>(pairing->c_pairing()));
+                    break;
+                case ElementType::Zr:
+                    backend::element_init_Zr(
+                        &_element,
+                        const_cast<backend::pairing_s*>(pairing->c_pairing()));
+                    break;
+                case ElementType::NotInitialized: break;
+            }
+        }
         Element(const Element& e) : _type(e._type), _pairing(e._pairing)
         {
             if (_type != ElementType::NotInitialized) {
@@ -49,8 +78,18 @@ namespace pbc
             }
         }
 
+        static Element from_integer(const PairingPtr& pairing, int value)
+        {
+            Element out(pairing, ElementType::Zr);
+            backend::element_init_Zr(
+                &out._element,
+                const_cast<backend::pairing_s*>(pairing->c_pairing()));
+            backend::element_set_si(&out._element, value);
+            return out;
+        }
+
 #define Element_Init_Func(type, type_lowercase)                                \
-    void init_##type_lowercase(const PairingPtr& pairing)                       \
+    void init_##type_lowercase(const PairingPtr& pairing)                      \
     {                                                                          \
         if (_type != ElementType::NotInitialized)                              \
             throw AlreadyInitializedError();                                   \
@@ -128,11 +167,11 @@ namespace pbc
             _pairing = e._pairing;
             return *this;
         }
-        Element& operator=(int i)
+        Element& operator=(int value)
         {
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
-            backend::element_set_si(&_element, i);
+            backend::element_set_si(&_element, value);
             return *this;
         }
         Element& random()
@@ -162,16 +201,14 @@ namespace pbc
                            const_cast<backend::element_s*>(c_element()),
                            const_cast<backend::element_s*>(e.c_element())) == 0;
         }
-        bool operator==(int i) const
+        bool operator==(int value) const
         {
-            if (_type == ElementType::NotInitialized) return false;
-            Element e;
-            e.init_same_as(*this);
-            e = i;
+            if (_type != ElementType::Zr) return false;
+            Element e = from_integer(_pairing, value);
             return operator==(e);
         }
         bool operator!=(const Element& e) const { return !operator==(e); }
-        bool operator!=(int i) const { return !operator==(i); }
+        bool operator!=(int value) const { return !operator==(value); }
         Element operator+(const Element& e) const
         {
             if (_type == ElementType::NotInitialized ||
@@ -206,14 +243,15 @@ namespace pbc
         {
             return operator=(operator-(e));
         }
-        Element operator*(int i) const
+        Element operator*(int value) const
         {
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
             Element out;
             out.init_same_as(*this);
             backend::element_mul_si(
-                &out._element, const_cast<backend::element_s*>(c_element()), i);
+                &out._element, const_cast<backend::element_s*>(c_element()),
+                value);
             return out;
         }
         Element operator*(const Element& e) const
@@ -228,7 +266,7 @@ namespace pbc
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
         }
-        Element& operator*=(int i) { return operator=(operator*(i)); }
+        Element& operator*=(int value) { return operator=(operator*(value)); }
         Element& operator*=(const Element& e)
         {
             return operator=(operator*(e));
