@@ -49,10 +49,12 @@ namespace std{
 %}
 
 %extend pbc::Element {
-    pbc::Element __pow__(const pbc::Element& e) {
+    pbc::Element __pow__(const pbc::Element& e)
+    {
         return $self->pow(e);
     }
-    std::string __str__() {
+    std::string __str__()
+    {
         return $self->to_str();
     }
 };
