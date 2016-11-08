@@ -89,13 +89,30 @@ BOOST_AUTO_TEST_CASE(to_and_from_str)
     e1.random();
     e2 = 42;
     BOOST_TEST(Element::from_str(pairing, e1.type(), e1.to_str()) == e1);
-    BOOST_TEST(Element::from_str(pairing, e2.type(), e2.to_str())  == e2);
+    BOOST_TEST(Element::from_str(pairing, e2.type(), e2.to_str()) == e2);
 
     Element e;
     BOOST_CHECK_THROW(e.to_str(), NotInitializedError);
     BOOST_CHECK_THROW(
         Element::from_str(pairing, ElementType::NotInitialized, ""),
         ElementTypeError);
+}
+
+BOOST_AUTO_TEST_CASE(to_and_from_byptes)
+{
+    Element e1, e2, e3, e4;
+    e1.init_g1(pairing);
+    e2.init_zr(pairing);
+    e1.random();
+    e2 = 42;
+    BOOST_TEST(Element::from_bytes(pairing, e1.type(), e1.to_bytes()) == e1);
+    BOOST_TEST(Element::from_bytes(pairing, e2.type(), e2.to_bytes()) == e2);
+
+    Element e;
+    BOOST_CHECK_THROW(e.to_bytes(), NotInitializedError);
+    BOOST_CHECK_THROW(Element::from_bytes(pairing, ElementType::NotInitialized,
+                                          basic_string<unsigned char>()),
+                      ElementTypeError);
 }
 
 BOOST_AUTO_TEST_CASE(random_method)

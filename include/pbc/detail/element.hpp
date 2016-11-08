@@ -96,6 +96,16 @@ namespace pbc
             backend::element_set_str(&out._element, data.c_str(), base);
             return out;
         }
+        static Element from_bytes(const PairingPtr& pairing,
+                                  const ElementType& type,
+                                  const std::basic_string<unsigned char>& data)
+        {
+            if (type == ElementType::NotInitialized) throw ElementTypeError();
+            Element out(pairing, type);
+            backend::element_from_bytes(
+                &out._element, const_cast<unsigned char*>(data.data()));
+            return out;
+        }
 
 #define Element_Init_Func(type, type_lowercase)                                \
     void init_##type_lowercase(const PairingPtr& pairing)                      \
@@ -139,6 +149,11 @@ namespace pbc
         ElementType type() const { return _type; }
         PairingPtr pairing() const { return _pairing; }
         const backend::element_s* c_element() const { return &_element; }
+        int bytes_length() const
+        {
+            return backend::element_length_in_bytes(
+                const_cast<backend::element_s*>(c_element()));
+        }
         std::string to_str(int base = 10) const
         {
             if (_type == ElementType::NotInitialized)
@@ -149,6 +164,16 @@ namespace pbc
                 sfd->fd, base, const_cast<backend::element_s*>(c_element()));
             streamopen::streamclose(sfd);
             return buf.str();
+        }
+        std::basic_string<unsigned char> to_bytes() const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            std::basic_string<unsigned char> out;
+            out.reserve(bytes_length());
+            backend::element_to_bytes(
+                &out.front(), const_cast<backend::element_s*>(c_element()));
+            return out;
         }
 
         Element& operator=(Element&& e)
