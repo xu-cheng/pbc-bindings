@@ -31,7 +31,7 @@ Python library files will be built into `swig/python`.
 ```bash
 mkdir build
 cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_PYTHON=ON
+cmake .. -DCMAKE_BUILD_TYPE=Release -DENABLE_RUBY=ON
 make
 ```
 Ruby library files will be built into `swig/ruby`.
