@@ -1,5 +1,6 @@
 %module pbc
 %{
+#include <cstddef>
 #include "pbc/pbc.hpp"
 using namespace pbc;
 %}
