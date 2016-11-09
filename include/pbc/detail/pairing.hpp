@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include "./backend.hpp"
 #include "./exceptions.hpp"
@@ -43,10 +44,7 @@ namespace pbc
             return ptr;
         }
 
-        const backend::pairing_s* c_pairing() const
-        {
-            return &_pairing;
-        }
+        const backend::pairing_s* c_pairing() const { return &_pairing; }
         bool symmetric() const
         {
             return backend::pairing_is_symmetric(

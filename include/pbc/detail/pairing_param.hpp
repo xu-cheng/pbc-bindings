@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include "./backend.hpp"
 #include "./exceptions.hpp"
@@ -33,10 +34,7 @@ namespace pbc
             streamopen::streamclose(sfd);
             return buf.str();
         }
-        const backend::pbc_param_s* c_param() const
-        {
-            return &_param;
-        }
+        const backend::pbc_param_s* c_param() const { return &_param; }
         static PairingParamPtr init_from_str(const std::string& param_str)
         {
             PairingParamPtr ptr = std::make_shared<PairingParam>();

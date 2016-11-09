@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <memory>
 #include <ostream>
 #include <string>
 #include "./backend.hpp"
