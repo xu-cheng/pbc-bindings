@@ -58,5 +58,9 @@ endif()
 
 if(ENABLE_TEST)
     enable_testing()
-    add_subdirectory(test)
+    add_subdirectory(test/cpp)
+
+    if(ENABLE_PYTHON)
+        add_subdirectory(test/python)
+    endif()
 endif()

@@ -13,6 +13,6 @@ foreach(test_src ${test_srcs})
     add_test(
         NAME ${test_name}
         COMMAND "${CMAKE_TEST_OUTPUT_DIRECTORY}/${test_name}"
-        WORKING_DIRECTORY ${DATA_DIR}
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
         )
 endforeach()
