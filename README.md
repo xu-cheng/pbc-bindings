@@ -1,6 +1,7 @@
 # Bindings for Pairing-Based Cryptography (libpbc)
 
-This project offers C++14 and SWIG bindings for libpbc.
+This project offers (partial) C++14 and SWIG bindings for libpbc.
+Noted that not all of libpbc C functions have been ported.
 
 ## How to use?
 
