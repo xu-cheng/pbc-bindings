@@ -34,9 +34,9 @@ namespace pbc
         InitializationError(const std::string& msg) : runtime_error(msg) {}
     };
 
-    class ElementTypeError : public std::runtime_error
+    class ElementTypeError : public std::invalid_argument
     {
     public:
-        ElementTypeError() : runtime_error("Element has wrong type.") {}
+        ElementTypeError() : invalid_argument("Element has wrong type.") {}
     };
 };

@@ -18,6 +18,8 @@ using namespace pbc;
         $action
     } catch (const std::runtime_error& e) {
         SWIG_exception(SWIG_RuntimeError, e.what());
+    } catch (const std::invalid_argument& e) {
+        SWIG_exception(SWIG_ValueError, e.what());
     } catch (...) {
         SWIG_exception(SWIG_RuntimeError, "unknown exception");
     }
