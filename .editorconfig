@@ -16,3 +16,6 @@ indent_size = 4
 [{m,M}akefile]
 indent_style = tab
 
+# Ruby
+[*.rb]
+indent_size = 2
