@@ -21,6 +21,7 @@ BOOST_AUTO_TEST_CASE(element_power)
     z.init_zr(pairing);
     z.random();
     BOOST_TEST(p.apply(z) == base.pow(z));
+    BOOST_TEST(p.apply(2) == base.pow(2));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

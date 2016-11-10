@@ -47,6 +47,10 @@ namespace pbc
                 const_cast<backend::element_pp_s*>(&_element_pp));
             return out;
         }
+        Element apply(int value) const
+        {
+            return apply(Element::from_integer(_base.pairing(), value));
+        }
 
     private:
         Element _base;

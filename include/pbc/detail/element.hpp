@@ -339,6 +339,10 @@ namespace pbc
                 const_cast<backend::element_s*>(e.c_element()));
             return out;
         }
+        Element pow(int value) const
+        {
+            return pow(Element::from_integer(_pairing, value));
+        }
 
         Element inverse() const
         {

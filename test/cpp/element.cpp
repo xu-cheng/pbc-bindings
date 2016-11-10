@@ -167,6 +167,8 @@ BOOST_AUTO_TEST_CASE(arithmetic)
     BOOST_TEST(e2 == 7);
     e2 = e2.pow(e3);
     BOOST_TEST(e2 == 117649);
+    e2 = e3.pow(2);
+    BOOST_TEST(e2 == 36);
     BOOST_TEST(-e3 == -6);
 }
 
