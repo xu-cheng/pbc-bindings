@@ -56,6 +56,10 @@ namespace std{
     {
         return $self->pow(e);
     }
+    pbc::Element __pow__(int value)
+    {
+        return $self->pow(value);
+    }
     std::string __str__()
     {
         return $self->to_str();

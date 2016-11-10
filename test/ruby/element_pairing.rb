@@ -1,6 +1,6 @@
 require_relative "helper"
 
-class TestPairing < TestCase
+class TestElementPairing < TestCase
   def setup
     @pairing = Pairing.init_from_param_str(TYPE_A_PARAM)
     @e1 = Element.new(@pairing, ElementType_G1)
