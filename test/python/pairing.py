@@ -15,7 +15,6 @@ class TestPairing(unittest.TestCase):
 
     def test_info(self):
         pairing = Pairing.init_from_param(self.param)
-        print(dir(pairing))
         self.assertTrue(pairing.symmetric())
         self.assertEqual(pairing.g1_bytes_length(), 128)
         self.assertEqual(pairing.g1_x_only_bytes_length(), 64)
