@@ -1,6 +1,6 @@
 # Bindings for Pairing-Based Cryptography (libpbc)
 
-This project offers (partial) C++14 and SWIG bindings for libpbc.
+This project offers (partial) C++14 and SWIG bindings for [libpbc](https://crypto.stanford.edu/pbc/).
 Noted that not all of libpbc C functions have been ported.
 
 ## How to use?
@@ -17,7 +17,9 @@ using namespace pbc;
 ### SWIG
 
 [SWIG](http://www.swig.org) offers bindings in a variety of high-level programming languages.
-Currently Python and Ruby are supported and tested.
+Currently Python and Ruby bindings are supported and tested.
+However, it should be relatively easy to build binding in any language supported by SWIG.
+The SWIG interface files are located in `swig/` folder.
 
 * Python
 ```bash
