@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.6.0)
+cmake_minimum_required (VERSION 3.7.0)
 project("pbc-bindings")
 
 # set output directories.
@@ -34,25 +34,6 @@ if(ENABLE_PYTHON OR ENABLE_RUBY)
 endif()
 
 if(ENABLE_PYTHON)
-    if(APPLE)
-        # Patching CMakeFindFrameworks.cmake
-        # TODO: remove it after cmake 3.7.0 is released.
-        set(CMAKE_FIND_FRAMEWORKS_INCLUDED 1)
-        macro(CMAKE_FIND_FRAMEWORKS fwk)
-            set(${fwk}_FRAMEWORKS)
-            foreach(dir
-                ~/Library/Frameworks/${fwk}.framework
-                /Library/Frameworks/${fwk}.framework
-                /usr/local/Frameworks/${fwk}.framework
-                /System/Library/Frameworks/${fwk}.framework
-                /Network/Library/Frameworks/${fwk}.framework)
-                if(EXISTS ${dir})
-                    set(${fwk}_FRAMEWORKS ${${fwk}_FRAMEWORKS} ${dir})
-                endif()
-            endforeach()
-        endmacro()
-    endif()
-
     find_package(PythonLibs 3.3 REQUIRED)
     include_directories(${PYTHON_INCLUDE_PATH})
 
