@@ -7,6 +7,11 @@ set(CMAKE_TEST_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/test)
 # this is the directory for our custom CMake modules.
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+# prefer to Homebrew formulae over system Framework on macOS.
+if(APPLE)
+    set(CMAKE_FIND_FRAMEWORK LAST)
+endif()
+
 find_package(PBC REQUIRED)
 include_directories(${PBC_INCLUDE_DIRS})
 list(APPEND linked_libraries ${PBC_LIBRARIES})
