@@ -17,4 +17,7 @@ test: build
 test-verbose:
 	BOOST_TEST_LOG_LEVEL=message $(MAKE) test ARGS="-VV"
 
-.PHONY: build cmake clean test test-verbose
+clang-format:
+	find -E . -type f -regex ".*\.(cpp|h|hpp)$$" -not -path "./build/*" -exec clang-format -i {} \;
+
+.PHONY: build cmake clean clang-format test test-verbose
