@@ -31,6 +31,10 @@ BOOST_AUTO_TEST_CASE(pairing_info)
     BOOST_TEST(pairing->g2_compressed_bytes_length() == 65);
     BOOST_TEST(pairing->gt_bytes_length() == 128);
     BOOST_TEST(pairing->zr_bytes_length() == 20);
+    BOOST_TEST(pairing->g1_order() == mpz_class("730750818665451621361119245571504901405976559617"));
+    BOOST_TEST(pairing->g2_order() == mpz_class("730750818665451621361119245571504901405976559617"));
+    BOOST_TEST(pairing->gt_order() == mpz_class("730750818665451621361119245571504901405976559617"));
+    BOOST_TEST(pairing->zr_order() == mpz_class("730750818665451621361119245571504901405976559617"));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
