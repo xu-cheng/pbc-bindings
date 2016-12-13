@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <gmpxx.h>
 #include <memory>
 #include <string>
 #include "./backend.hpp"
@@ -89,6 +90,22 @@ namespace pbc
         {
             return backend::pairing_length_in_bytes_Zr(
                 const_cast<backend::pairing_s*>(c_pairing()));
+        }
+        mpz_class g1_order() const
+        {
+            return mpz_class(_pairing.G1->order);
+        }
+        mpz_class g2_order() const
+        {
+            return mpz_class(_pairing.G2->order);
+        }
+        mpz_class gt_order() const
+        {
+            return mpz_class(_pairing.GT->order);
+        }
+        mpz_class zr_order() const
+        {
+            return mpz_class(_pairing.Zr[0].order);
         }
 
     private:
