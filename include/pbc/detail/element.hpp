@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <gmpxx.h>
 #include <memory>
 #include <ostream>
 #include <string>
@@ -86,6 +87,17 @@ namespace pbc
                 &out._element,
                 const_cast<backend::pairing_s*>(pairing->c_pairing()));
             backend::element_set_si(&out._element, value);
+            return out;
+        }
+        static Element from_mpz_class(const PairingPtr& pairing,
+                                      const mpz_class& value)
+        {
+            Element out(pairing, ElementType::Zr);
+            backend::element_init_Zr(
+                &out._element,
+                const_cast<backend::pairing_s*>(pairing->c_pairing()));
+            backend::element_set_mpz(
+                &out._element, const_cast<__mpz_struct*>(value.get_mpz_t()));
             return out;
         }
         static Element from_str(const PairingPtr& pairing,
