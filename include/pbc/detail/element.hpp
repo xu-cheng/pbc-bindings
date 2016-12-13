@@ -167,6 +167,13 @@ namespace pbc
             return backend::element_length_in_bytes(
                 const_cast<backend::element_s*>(c_element()));
         }
+        mpz_class to_mpz_class() const
+        {
+            mpz_class out;
+            backend::element_to_mpz(
+                out.get_mpz_t(), const_cast<backend::element_s*>(c_element()));
+            return out;
+        }
         std::string to_str(int base = 10) const
         {
             if (_type == ElementType::NotInitialized)
