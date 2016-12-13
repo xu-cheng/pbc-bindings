@@ -134,6 +134,17 @@ BOOST_AUTO_TEST_CASE(random_method)
     BOOST_TEST(e != 0);
 }
 
+BOOST_AUTO_TEST_CASE(set_zero_and_one)
+{
+    Element e;
+    BOOST_CHECK_THROW(e.random(), NotInitializedError);
+    e.init_zr(pairing);
+    e.set_zero();
+    BOOST_TEST(e == 0);
+    e.set_one();
+    BOOST_TEST(e == 1);
+}
+
 BOOST_AUTO_TEST_CASE(arithmetic)
 {
     Element e1, e2, e3, e4;

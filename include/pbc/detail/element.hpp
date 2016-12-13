@@ -235,6 +235,20 @@ namespace pbc
             backend::element_random(&_element);
             return *this;
         }
+        Element& set_zero()
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            backend::element_set0(&_element);
+            return *this;
+        }
+        Element& set_one()
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            backend::element_set1(&_element);
+            return *this;
+        }
 
         bool operator==(const Element& e) const
         {
