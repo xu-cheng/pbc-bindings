@@ -268,8 +268,27 @@ namespace pbc
             Element e = from_integer(_pairing, value);
             return operator==(e);
         }
+        bool operator==(const mpz_class& value) const
+        {
+            if (_type != ElementType::Zr) return false;
+            Element e = from_mpz_class(_pairing, value);
+            return operator==(e);
+        }
         bool operator!=(const Element& e) const { return !operator==(e); }
         bool operator!=(int value) const { return !operator==(value); }
+        bool is_zero() const
+        {
+            if (_type == ElementType::NotInitialized) return false;
+            return backend::element_is0(
+                const_cast<backend::element_s*>(c_element()));
+        }
+        bool is_one() const
+        {
+            if (_type == ElementType::NotInitialized) return false;
+            return backend::element_is1(
+                const_cast<backend::element_s*>(c_element()));
+        }
+
         Element operator+(const Element& e) const
         {
             if (_type == ElementType::NotInitialized ||

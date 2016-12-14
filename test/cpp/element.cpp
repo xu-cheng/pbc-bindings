@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(from_integer_and_to_from_mpz_class)
     Element e1 = Element::from_integer(pairing, 42);
     BOOST_TEST(e1 == 42);
     Element e2 = Element::from_mpz_class(pairing, mpz_class(42));
-    BOOST_TEST(e2 == 42);
+    BOOST_TEST(e2 == mpz_class(42));
     mpz_class z = e2.to_mpz_class();
     BOOST_TEST(z == 42);
 }
@@ -138,11 +138,11 @@ BOOST_AUTO_TEST_CASE(set_zero_and_one)
 {
     Element e;
     BOOST_CHECK_THROW(e.random(), NotInitializedError);
-    e.init_zr(pairing);
+    e.init_g1(pairing);
     e.set_zero();
-    BOOST_TEST(e == 0);
+    BOOST_TEST(e.is_zero());
     e.set_one();
-    BOOST_TEST(e == 1);
+    BOOST_TEST(e.is_one());
 }
 
 BOOST_AUTO_TEST_CASE(arithmetic)
