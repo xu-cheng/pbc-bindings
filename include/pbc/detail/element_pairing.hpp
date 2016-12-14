@@ -51,6 +51,7 @@ namespace pbc
         _p1 = in1.cbegin();
         _p2 = in2.cbegin();
 
+        size_t real_length = 0;
         for (size_t i = 0; i < length; ++i, ++_p1, ++_p2) {
             if (_p1->type() == ElementType::NotInitialized ||
                 _p2->type() == ElementType::NotInitialized) {
@@ -58,13 +59,23 @@ namespace pbc
                 delete[] _in2;
                 throw NotInitializedError();
             }
-            _in1[i][0] = *_p1->c_element();
-            _in2[i][0] = *_p2->c_element();
+
+            // The C backend of pbc has a bug that if any input is identity
+            // element, `element_prod_pairing` will always return identity
+            // element. Here, we workaround this issue.
+            if (_p1->is_one() || _p2->is_one()) continue;
+
+            _in1[real_length][0] = *_p1->c_element();
+            _in2[real_length][0] = *_p2->c_element();
+            ++real_length;
         }
 
         Element out;
         out.init_gt(in1.cbegin()->pairing());
-        backend::element_prod_pairing(&out._element, _in1, _in2, length);
+        out.set_one();
+        if (real_length > 0)
+            backend::element_prod_pairing(&out._element, _in1, _in2,
+                                          real_length);
 
         delete[] _in1;
         delete[] _in2;
