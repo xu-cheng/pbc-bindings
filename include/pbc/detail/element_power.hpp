@@ -51,6 +51,11 @@ namespace pbc
         {
             return apply(Element::from_integer(_base.pairing(), value));
         }
+        template <class... Args>
+        inline Element pow(Args&&... args)
+        {
+            return apply(std::forward<Args>(args)...);
+        }
 
     private:
         Element _base;
