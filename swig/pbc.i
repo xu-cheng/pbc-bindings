@@ -29,7 +29,7 @@ namespace std{
     %template(ElementVector) vector<pbc::Element>;
 }
 
-%ignore pbc::Element::Element(pbc::Element &&);
+%ignore pbc::Element::Element(Element &&);
 %ignore pbc::Element::operator=;
 
 %shared_ptr(pbc::Pairing)
