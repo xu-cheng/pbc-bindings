@@ -24,5 +24,7 @@ class TestElementPower < TestCase
     end
     assert_equal @base ** @z, p.apply(@z)
     assert_equal @base ** 2, p.apply(2)
+    assert_equal @base ** @z, p ** @z
+    assert_equal @base ** 2, p ** 2
   end
 end

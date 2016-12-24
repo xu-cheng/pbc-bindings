@@ -19,7 +19,9 @@ class TestElementPower(unittest.TestCase):
         with self.assertRaises(ValueError):
             p.apply(self.e)
         self.assertEqual(p.apply(self.z), self.base ** self.z)
+        self.assertEqual(p ** self.z, self.base ** self.z)
         self.assertEqual(p.apply(2), self.base ** 2)
+        self.assertEqual(p ** 2, self.base ** 2)
 
 if __name__ == '__main__':
     unittest.main()

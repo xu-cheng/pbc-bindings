@@ -65,3 +65,14 @@ namespace std{
         return $self->to_str();
     }
 };
+
+%extend pbc::FixedBasePower {
+    pbc::Element __pow__(const pbc::Element& e)
+    {
+        return $self->apply(e);
+    }
+    pbc::Element __pow__(int value)
+    {
+        return $self->apply(value);
+    }
+}
