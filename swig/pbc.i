@@ -6,6 +6,7 @@ using namespace pbc;
 %}
 
 %nodefaultctor;
+%feature("autodoc", "3");
 
 %include <exception.i>
 %include <std_except.i>
