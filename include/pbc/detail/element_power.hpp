@@ -61,4 +61,48 @@ namespace pbc
         Element _base;
         backend::element_pp_s _element_pp;
     };
+
+    // return a1^n1 * a2^n2
+    Element pow2(const Element& a1, const Element& n1, const Element& a2,
+                 const Element& n2)
+    {
+        if (a1.type() == ElementType::NotInitialized ||
+            a2.type() == ElementType::NotInitialized)
+            throw NotInitializedError();
+        else if (n1.type() != ElementType::Zr || n2.type() != ElementType::Zr)
+            throw ElementTypeError();
+
+        Element out;
+        out.init_same_as(a1);
+        backend::element_pow2_zn(
+            &out._element, const_cast<backend::element_s*>(a1.c_element()),
+            const_cast<backend::element_s*>(n1.c_element()),
+            const_cast<backend::element_s*>(a2.c_element()),
+            const_cast<backend::element_s*>(n2.c_element()));
+        return out;
+    }
+
+    // return a1^n1 * a2^n2 * a3^n3
+    Element pow3(const Element& a1, const Element& n1, const Element& a2,
+                 const Element& n2, const Element& a3, const Element& n3)
+    {
+        if (a1.type() == ElementType::NotInitialized ||
+            a2.type() == ElementType::NotInitialized ||
+            a3.type() == ElementType::NotInitialized)
+            throw NotInitializedError();
+        else if (n1.type() != ElementType::Zr || n2.type() != ElementType::Zr ||
+                 n3.type() != ElementType::Zr)
+            throw ElementTypeError();
+
+        Element out;
+        out.init_same_as(a1);
+        backend::element_pow3_zn(
+            &out._element, const_cast<backend::element_s*>(a1.c_element()),
+            const_cast<backend::element_s*>(n1.c_element()),
+            const_cast<backend::element_s*>(a2.c_element()),
+            const_cast<backend::element_s*>(n2.c_element()),
+            const_cast<backend::element_s*>(a3.c_element()),
+            const_cast<backend::element_s*>(n3.c_element()));
+        return out;
+    }
 };

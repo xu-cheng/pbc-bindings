@@ -413,6 +413,10 @@ namespace pbc
             std::is_same<typename Container::value_type, Element>::value,
             Element>::type
         e_prod(const Container&, const Container&);
+        friend Element pow2(const Element&, const Element&, const Element&,
+                            const Element&);
+        friend Element pow3(const Element&, const Element&, const Element&,
+                            const Element&, const Element&, const Element&);
         friend FixedG1Pairing;
         friend FixedBasePower;
 
