@@ -164,11 +164,17 @@ namespace pbc
         const backend::element_s* c_element() const { return &_element; }
         int bytes_length() const
         {
-            return backend::element_length_in_bytes(
-                const_cast<backend::element_s*>(c_element()));
+            if (_type == ElementType::NotInitialized)
+                return 0;
+            else
+                return backend::element_length_in_bytes(
+                    const_cast<backend::element_s*>(c_element()));
         }
         mpz_class to_mpz_class() const
         {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (_type != ElementType::Zr) throw ElementTypeError();
             mpz_class out;
             backend::element_to_mpz(
                 out.get_mpz_t(), const_cast<backend::element_s*>(c_element()));

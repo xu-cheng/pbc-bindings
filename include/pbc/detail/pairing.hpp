@@ -95,6 +95,7 @@ namespace pbc
         mpz_class g2_order() const { return mpz_class(_pairing.G2->order); }
         mpz_class gt_order() const { return mpz_class(_pairing.GT->order); }
         mpz_class zr_order() const { return mpz_class(_pairing.Zr[0].order); }
+
     private:
         backend::pairing_s _pairing;
     };
