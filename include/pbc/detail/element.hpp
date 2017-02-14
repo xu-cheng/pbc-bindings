@@ -204,7 +204,7 @@ namespace pbc
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
             std::string out;
-            out.reserve(bytes_length());
+            out.resize(bytes_length());
             backend::element_to_bytes(
                 reinterpret_cast<unsigned char*>(&out.front()),
                 const_cast<backend::element_s*>(c_element()));
