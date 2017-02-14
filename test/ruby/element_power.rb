@@ -16,6 +16,7 @@ class TestElementPower < TestCase
       FixedBasePower.new Element.new
     end
     p = FixedBasePower.new base
+    assert_equal base, p.get_base
     assert_raise RuntimeError do
       p.apply Element.new
     end

@@ -34,6 +34,7 @@ namespace pbc
         }
         FixedBasePower(const FixedBasePower&) = delete;
         ~FixedBasePower() { backend::element_pp_clear(&_element_pp); }
+        Element get_base() const { return _base; }
         Element apply(const Element& pow) const
         {
             if (pow.type() == ElementType::NotInitialized)

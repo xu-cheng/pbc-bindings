@@ -14,6 +14,7 @@ class TestElementPower(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             FixedBasePower(Element())
         p = FixedBasePower(base)
+        self.assertEqual(p.get_base(), base)
         with self.assertRaises(RuntimeError):
             p.apply(Element())
         with self.assertRaises(ValueError):

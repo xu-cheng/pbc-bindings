@@ -15,6 +15,7 @@ BOOST_AUTO_TEST_CASE(element_power)
     base.init_g1(pairing);
     base.random();
     FixedBasePower p(base);
+    BOOST_TEST(p.get_base() == base);
     BOOST_CHECK_THROW(p.apply(e), NotInitializedError);
     e.init_g1(pairing);
     BOOST_CHECK_THROW(p.apply(e), ElementTypeError);
