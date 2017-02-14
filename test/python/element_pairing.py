@@ -34,6 +34,7 @@ class TestElementPairing(unittest.TestCase):
         with self.assertRaises(ValueError):
             FixedG1Pairing(self.z)
         p = FixedG1Pairing(self.e1)
+        self.assertEqual(p.get_g1(), self.e1)
         with self.assertRaises(RuntimeError):
             p.apply(Element())
         self.assertEqual(p.apply(self.e2), e(self.e1, self.e2))

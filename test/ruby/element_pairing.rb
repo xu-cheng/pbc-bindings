@@ -43,6 +43,7 @@ class TestElementPairing < TestCase
       FixedG1Pairing.new @zr
     end
     p = FixedG1Pairing.new @e1
+    assert_equal @e1, p.get_g1
     assert_raise RuntimeError do
       p.apply Element.new
     end

@@ -58,6 +58,7 @@ BOOST_AUTO_TEST_CASE(element_pairing_fixed_g1)
     e1.init_g1(pairing);
     e1.random();
     FixedG1Pairing p(e1);
+    BOOST_TEST(p.get_g1() == e1);
     BOOST_CHECK_THROW(p.apply(e2), NotInitializedError);
     e2.init_g2(pairing);
     e2.random();

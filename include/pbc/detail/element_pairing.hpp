@@ -89,25 +89,26 @@ namespace pbc
     class FixedG1Pairing
     {
     public:
-        FixedG1Pairing(const Element& g1)
+        FixedG1Pairing(const Element& g1) : _g1(g1)
         {
             if (g1.type() == ElementType::NotInitialized)
                 throw NotInitializedError();
             else if (g1.type() != ElementType::G1)
                 throw ElementTypeError();
-            _pairing = g1.pairing();
+            auto pairing = g1.pairing();
             backend::pairing_pp_init(
                 &_pairing_pp, const_cast<backend::element_s*>(g1.c_element()),
-                const_cast<backend::pairing_s*>(_pairing->c_pairing()));
+                const_cast<backend::pairing_s*>(pairing->c_pairing()));
         }
         FixedG1Pairing(const FixedG1Pairing&) = delete;
         ~FixedG1Pairing() { backend::pairing_pp_clear(&_pairing_pp); }
+        Element get_g1() const { return _g1; }
         Element apply(const Element& g2) const
         {
             if (g2.type() == ElementType::NotInitialized)
                 throw NotInitializedError();
             Element out;
-            out.init_gt(_pairing);
+            out.init_gt(_g1.pairing());
             backend::pairing_pp_apply(
                 &out._element, const_cast<backend::element_s*>(g2.c_element()),
                 const_cast<backend::pairing_pp_s*>(&_pairing_pp));
@@ -115,7 +116,7 @@ namespace pbc
         }
 
     private:
-        PairingPtr _pairing;
+        Element _g1;
         backend::pairing_pp_s _pairing_pp;
     };
 };
