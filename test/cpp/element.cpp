@@ -133,9 +133,9 @@ BOOST_AUTO_TEST_CASE(to_and_from_byptes)
 
     Element e;
     BOOST_CHECK_THROW(e.to_bytes(), NotInitializedError);
-    BOOST_CHECK_THROW(Element::from_bytes(pairing, ElementType::NotInitialized,
-                                          basic_string<unsigned char>()),
-                      ElementTypeError);
+    BOOST_CHECK_THROW(
+        Element::from_bytes(pairing, ElementType::NotInitialized, string()),
+        ElementTypeError);
 }
 
 BOOST_AUTO_TEST_CASE(random_method)

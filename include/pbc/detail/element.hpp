@@ -111,12 +111,14 @@ namespace pbc
         }
         static Element from_bytes(const PairingPtr& pairing,
                                   const ElementType& type,
-                                  const std::basic_string<unsigned char>& data)
+                                  const std::string& data)
         {
             if (type == ElementType::NotInitialized) throw ElementTypeError();
             Element out(pairing, type);
             backend::element_from_bytes(
-                &out._element, const_cast<unsigned char*>(data.data()));
+                &out._element,
+                const_cast<unsigned char*>(
+                    reinterpret_cast<const unsigned char*>(data.data())));
             return out;
         }
 
@@ -197,14 +199,15 @@ namespace pbc
             streamopen::streamclose(sfd);
             return buf.str();
         }
-        std::basic_string<unsigned char> to_bytes() const
+        std::string to_bytes() const
         {
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
-            std::basic_string<unsigned char> out;
+            std::string out;
             out.reserve(bytes_length());
             backend::element_to_bytes(
-                &out.front(), const_cast<backend::element_s*>(c_element()));
+                reinterpret_cast<unsigned char*>(&out.front()),
+                const_cast<backend::element_s*>(c_element()));
             return out;
         }
 
