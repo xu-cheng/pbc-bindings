@@ -48,6 +48,19 @@ BOOST_AUTO_TEST_CASE(init_g2)
     BOOST_TEST(e2.type() == ElementType::G2);
 }
 
+BOOST_AUTO_TEST_CASE(swap)
+{
+    Element e1, e2;
+    e2.init_zr(pairing);
+    e2 = 42;
+    e1.swap(e2);
+    BOOST_TEST(e1.type() == ElementType::Zr);
+    BOOST_TEST(e2.type() == ElementType::NotInitialized);
+    BOOST_TEST(e1 == 42);
+    BOOST_TEST(e1.pairing());
+    BOOST_TEST(!e2.pairing());
+}
+
 BOOST_AUTO_TEST_CASE(assign_and_compare)
 {
     Element e1, e2, e3, e4;

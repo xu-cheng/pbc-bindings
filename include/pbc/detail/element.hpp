@@ -158,6 +158,12 @@ namespace pbc
             _type = e._type;
             _pairing = e._pairing;
         }
+        void swap(Element& e)
+        {
+            std::swap(_type, e._type);
+            std::swap(_pairing, e._pairing);
+            std::swap(_element, e._element);
+        }
 
         ElementType type() const { return _type; }
         PairingPtr pairing() const { return _pairing; }
