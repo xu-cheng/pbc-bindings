@@ -10,6 +10,7 @@
 #include <memory>
 #include <ostream>
 #include <string>
+#include <vector>
 #include "./backend.hpp"
 #include "./element.hpp"
 #include "./exceptions.hpp"
@@ -43,20 +44,17 @@ namespace pbc
         else if (length != in2.size())
             throw std::invalid_argument("in1.size() != in2.size()");
 
-        backend::element_t *_in1, *_in2;
-        _in1 = new backend::element_t[length];
-        _in2 = new backend::element_t[length];
+        std::vector<backend::element_s> _in1, _in2;
+        _in1.reserve(length);
+        _in2.reserve(length);
 
         typename Container::const_iterator _p1, _p2;
         _p1 = in1.cbegin();
         _p2 = in2.cbegin();
 
-        size_t real_length = 0;
-        for (size_t i = 0; i < length; ++i, ++_p1, ++_p2) {
+        for (; _p1 != in1.cend() && _p2 != in2.cend(); ++_p1, ++_p2) {
             if (_p1->type() == ElementType::NotInitialized ||
                 _p2->type() == ElementType::NotInitialized) {
-                delete[] _in1;
-                delete[] _in2;
                 throw NotInitializedError();
             }
 
@@ -65,20 +63,22 @@ namespace pbc
             // element. Here, we workaround this issue.
             if (_p1->is_one() || _p2->is_one()) continue;
 
-            _in1[real_length][0] = *_p1->c_element();
-            _in2[real_length][0] = *_p2->c_element();
-            ++real_length;
+            _in1.push_back(*_p1->c_element());
+            _in2.push_back(*_p2->c_element());
         }
 
         Element out;
         out.init_gt(in1.cbegin()->pairing());
-        out.set_one();
-        if (real_length > 0)
-            backend::element_prod_pairing(&out._element, _in1, _in2,
-                                          real_length);
+        if (_in1.size() > 0) {
+            backend::element_prod_pairing(
+                &out._element,
+                reinterpret_cast<backend::element_t*>(_in1.data()),
+                reinterpret_cast<backend::element_t*>(_in2.data()),
+                _in1.size());
+        } else {
+            out.set_one();
+        }
 
-        delete[] _in1;
-        delete[] _in2;
         return out;
     }
 
