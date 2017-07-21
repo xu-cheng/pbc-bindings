@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.7.0)
+cmake_minimum_required (VERSION 3.8.0)
 project("pbc-bindings")
 
 # set output directories.
@@ -43,7 +43,7 @@ if(ENABLE_PYTHON)
     include_directories(${PYTHON_INCLUDE_PATH})
 
     set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/python")
-    swig_add_module(pbc python swig/pbc.i)
+    swig_add_library(pbc LANGUAGE python SOURCES swig/pbc.i)
     swig_link_libraries(pbc ${linked_libraries} ${PYTHON_LIBRARIES})
     set_target_properties(${SWIG_MODULE_pbc_REAL_NAME}
         PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SWIG_OUTDIR})
@@ -54,7 +54,7 @@ if(ENABLE_RUBY)
     include_directories(${RUBY_INCLUDE_DIRS})
 
     set(CMAKE_SWIG_OUTDIR "${CMAKE_BINARY_DIR}/swig/ruby")
-    swig_add_module(pbc ruby swig/pbc.i)
+    swig_add_library(pbc LANGUAGE ruby SOURCES swig/pbc.i)
     swig_link_libraries(pbc ${linked_libraries} ${RUBY_LIBRARY})
     set_target_properties(${SWIG_MODULE_pbc_REAL_NAME}
         PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SWIG_OUTDIR})
