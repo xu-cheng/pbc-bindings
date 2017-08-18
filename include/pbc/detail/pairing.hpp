@@ -45,6 +45,7 @@ namespace pbc
             return ptr;
         }
 
+        backend::pairing_s* c_pairing() { return &_pairing; }
         const backend::pairing_s* c_pairing() const { return &_pairing; }
         bool symmetric() const
         {

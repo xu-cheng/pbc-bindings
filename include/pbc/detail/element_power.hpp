@@ -57,6 +57,11 @@ namespace pbc
         {
             return apply(std::forward<Args>(args)...);
         }
+        backend::element_pp_s* c_element_pp() { return &_element_pp; }
+        const backend::element_pp_s* c_element_pp() const
+        {
+            return &_element_pp;
+        }
 
     private:
         Element _base;

@@ -114,6 +114,11 @@ namespace pbc
                 const_cast<backend::pairing_pp_s*>(&_pairing_pp));
             return out;
         }
+        backend::pairing_pp_s* c_pairing_pp() { return &_pairing_pp; }
+        const backend::pairing_pp_s* c_pairing_pp() const
+        {
+            return &_pairing_pp;
+        }
 
     private:
         Element _g1;

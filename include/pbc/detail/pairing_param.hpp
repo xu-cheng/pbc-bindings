@@ -34,6 +34,7 @@ namespace pbc
             streamopen::streamclose(sfd);
             return buf.str();
         }
+        backend::pbc_param_s* c_param() { return &_param; }
         const backend::pbc_param_s* c_param() const { return &_param; }
         static PairingParamPtr init_from_str(const std::string& param_str)
         {

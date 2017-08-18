@@ -169,6 +169,7 @@ namespace pbc
 
         ElementType type() const { return _type; }
         PairingPtr pairing() const { return _pairing; }
+        backend::element_s* c_element() { return &_element; }
         const backend::element_s* c_element() const { return &_element; }
         int bytes_length() const
         {
