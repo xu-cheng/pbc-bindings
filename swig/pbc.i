@@ -35,6 +35,8 @@ namespace std{
 
 %shared_ptr(pbc::Pairing)
 %shared_ptr(pbc::PairingParam)
+%shared_ptr(pbc::FixedG1Pairing)
+%shared_ptr(pbc::FixedBasePower)
 
 /* the order is sensitive */
 %include "pbc/detail/pairing_param.hpp"
