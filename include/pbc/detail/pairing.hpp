@@ -24,6 +24,7 @@ namespace pbc
     {
     public:
         Pairing() = default;
+        Pairing(const backend::pairing_s& pairing) : _pairing(pairing) {}
         Pairing(const Pairing&) = delete;
         ~Pairing() { pairing_clear(&_pairing); }
         static PairingPtr init_from_param_str(const std::string& param_str)

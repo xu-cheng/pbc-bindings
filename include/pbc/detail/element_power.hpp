@@ -32,6 +32,11 @@ namespace pbc
                 &_element_pp,
                 const_cast<backend::element_s*>(base.c_element()));
         }
+        FixedBasePower(const Element& base,
+                       const backend::element_pp_s& element_pp)
+            : _base(base), _element_pp(element_pp)
+        {
+        }
         FixedBasePower(const FixedBasePower&) = delete;
         ~FixedBasePower() { backend::element_pp_clear(&_element_pp); }
         Element get_base() const { return _base; }

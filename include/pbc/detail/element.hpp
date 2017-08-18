@@ -58,6 +58,11 @@ namespace pbc
                 case ElementType::NotInitialized: break;
             }
         }
+        Element(const PairingPtr& pairing, const ElementType& type,
+                const backend::element_s& element)
+            : _element(element), _type(type), _pairing(pairing)
+        {
+        }
         Element(const Element& e) : _type(e._type), _pairing(e._pairing)
         {
             if (_type != ElementType::NotInitialized) {

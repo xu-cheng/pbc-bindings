@@ -23,6 +23,7 @@ namespace pbc
     {
     public:
         PairingParam() = default;
+        PairingParam(const backend::pbc_param_s& param) : _param(param) {}
         PairingParam(const PairingParam&) = delete;
         ~PairingParam() { backend::pbc_param_clear(&_param); }
         std::string to_str() const

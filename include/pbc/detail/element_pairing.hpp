@@ -100,6 +100,11 @@ namespace pbc
                 &_pairing_pp, const_cast<backend::element_s*>(g1.c_element()),
                 const_cast<backend::pairing_s*>(pairing->c_pairing()));
         }
+        FixedG1Pairing(const Element& g1,
+                       const backend::pairing_pp_s& pairing_pp)
+            : _g1(g1), _pairing_pp(pairing_pp)
+        {
+        }
         FixedG1Pairing(const FixedG1Pairing&) = delete;
         ~FixedG1Pairing() { backend::pairing_pp_clear(&_pairing_pp); }
         Element get_g1() const { return _g1; }
