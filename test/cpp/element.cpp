@@ -130,12 +130,19 @@ BOOST_AUTO_TEST_CASE(to_and_from_byptes)
     e2 = 42;
     BOOST_TEST(Element::from_bytes(pairing, e1.type(), e1.to_bytes()) == e1);
     BOOST_TEST(Element::from_bytes(pairing, e2.type(), e2.to_bytes()) == e2);
+    BOOST_TEST(Element::from_bytes_compressed(pairing, e1.type(),
+                                              e1.to_bytes_compressed()) == e1);
 
     Element e;
     BOOST_CHECK_THROW(e.to_bytes(), NotInitializedError);
+    BOOST_CHECK_THROW(e.to_bytes_compressed(), NotInitializedError);
+    BOOST_CHECK_THROW(e2.to_bytes_compressed(), ElementTypeError);
     BOOST_CHECK_THROW(
         Element::from_bytes(pairing, ElementType::NotInitialized, string()),
         ElementTypeError);
+    BOOST_CHECK_THROW(Element::from_bytes_compressed(
+                          pairing, ElementType::NotInitialized, string()),
+                      ElementTypeError);
 }
 
 BOOST_AUTO_TEST_CASE(random_method)

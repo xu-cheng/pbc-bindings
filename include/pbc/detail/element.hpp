@@ -126,6 +126,18 @@ namespace pbc
                     reinterpret_cast<const unsigned char*>(data.data())));
             return out;
         }
+        static Element from_bytes_compressed(const PairingPtr& pairing,
+                                             const ElementType& type,
+                                             const std::string& data)
+        {
+            if (type == ElementType::NotInitialized) throw ElementTypeError();
+            Element out(pairing, type);
+            backend::element_from_bytes_compressed(
+                &out._element,
+                const_cast<unsigned char*>(
+                    reinterpret_cast<const unsigned char*>(data.data())));
+            return out;
+        }
 
 #define Element_Init_Func(type, type_lowercase)                                \
     void init_##type_lowercase(const PairingPtr& pairing)                      \
@@ -184,6 +196,14 @@ namespace pbc
                 return backend::element_length_in_bytes(
                     const_cast<backend::element_s*>(c_element()));
         }
+        int compressed_bytes_length() const
+        {
+            if (_type == ElementType::NotInitialized)
+                return 0;
+            else
+                return backend::element_length_in_bytes_compressed(
+                    const_cast<backend::element_s*>(c_element()));
+        }
         mpz_class to_mpz_class() const
         {
             if (_type == ElementType::NotInitialized)
@@ -212,6 +232,18 @@ namespace pbc
             std::string out;
             out.resize(bytes_length());
             backend::element_to_bytes(
+                reinterpret_cast<unsigned char*>(&out.front()),
+                const_cast<backend::element_s*>(c_element()));
+            return out;
+        }
+        std::string to_bytes_compressed() const
+        {
+            if (_type == ElementType::NotInitialized)
+                throw NotInitializedError();
+            if (_type == ElementType::Zr) throw ElementTypeError();
+            std::string out;
+            out.resize(compressed_bytes_length());
+            backend::element_to_bytes_compressed(
                 reinterpret_cast<unsigned char*>(&out.front()),
                 const_cast<backend::element_s*>(c_element()));
             return out;
