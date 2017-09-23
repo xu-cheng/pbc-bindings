@@ -108,11 +108,17 @@ BOOST_AUTO_TEST_CASE(to_and_from_str)
 {
     Element e1, e2, e3, e4;
     e1.init_g1(pairing);
-    e2.init_zr(pairing);
+    e2.init_g2(pairing);
+    e3.init_gt(pairing);
+    e4.init_zr(pairing);
     e1.random();
-    e2 = 42;
+    e2.random();
+    e3.random();
+    e4.random();
     BOOST_TEST(Element::from_str(pairing, e1.type(), e1.to_str()) == e1);
     BOOST_TEST(Element::from_str(pairing, e2.type(), e2.to_str()) == e2);
+    BOOST_TEST(Element::from_str(pairing, e3.type(), e3.to_str()) == e3);
+    BOOST_TEST(Element::from_str(pairing, e4.type(), e4.to_str()) == e4);
 
     Element e;
     BOOST_CHECK_THROW(e.to_str(), NotInitializedError);
@@ -125,18 +131,27 @@ BOOST_AUTO_TEST_CASE(to_and_from_byptes)
 {
     Element e1, e2, e3, e4;
     e1.init_g1(pairing);
-    e2.init_zr(pairing);
+    e2.init_g2(pairing);
+    e3.init_gt(pairing);
+    e4.init_zr(pairing);
     e1.random();
-    e2 = 42;
+    e2.random();
+    e3.random();
+    e4.random();
     BOOST_TEST(Element::from_bytes(pairing, e1.type(), e1.to_bytes()) == e1);
     BOOST_TEST(Element::from_bytes(pairing, e2.type(), e2.to_bytes()) == e2);
+    BOOST_TEST(Element::from_bytes(pairing, e3.type(), e3.to_bytes()) == e3);
+    BOOST_TEST(Element::from_bytes(pairing, e4.type(), e4.to_bytes()) == e4);
     BOOST_TEST(Element::from_bytes_compressed(pairing, e1.type(),
                                               e1.to_bytes_compressed()) == e1);
+    BOOST_TEST(Element::from_bytes_compressed(pairing, e2.type(),
+                                              e2.to_bytes_compressed()) == e2);
 
     Element e;
     BOOST_CHECK_THROW(e.to_bytes(), NotInitializedError);
     BOOST_CHECK_THROW(e.to_bytes_compressed(), NotInitializedError);
-    BOOST_CHECK_THROW(e2.to_bytes_compressed(), ElementTypeError);
+    BOOST_CHECK_THROW(e3.to_bytes_compressed(), ElementTypeError);
+    BOOST_CHECK_THROW(e4.to_bytes_compressed(), ElementTypeError);
     BOOST_CHECK_THROW(
         Element::from_bytes(pairing, ElementType::NotInitialized, string()),
         ElementTypeError);

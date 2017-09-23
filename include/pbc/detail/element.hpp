@@ -240,7 +240,8 @@ namespace pbc
         {
             if (_type == ElementType::NotInitialized)
                 throw NotInitializedError();
-            if (_type == ElementType::Zr) throw ElementTypeError();
+            if (_type == ElementType::Zr || _type == ElementType::GT)
+                throw ElementTypeError();
             std::string out;
             out.resize(compressed_bytes_length());
             backend::element_to_bytes_compressed(
