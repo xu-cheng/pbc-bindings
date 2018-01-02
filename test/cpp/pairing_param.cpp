@@ -1,38 +1,37 @@
 #include "helper.h"
 
-BOOST_AUTO_TEST_CASE(to_and_init_from_str)
+TEST_CASE_METHOD(Fixture, "to_and_init_from_str")
 {
-    BOOST_CHECK_THROW(PairingParam::init_from_str("type a"),
-                      InitializationError);
-    PairingParamPtr param = PairingParam::init_from_str(TYPE_A_PARAM);
+    CHECK_THROWS_AS(PairingParam::init_from_str("type a"), InitializationError);
+    PairingParamPtr param = PairingParam::init_from_str(type_a_param);
     string param_str = param->to_str();
-    BOOST_TEST(param_str == TYPE_A_PARAM);
+    CHECK(param_str == type_a_param);
 }
 
-BOOST_AUTO_TEST_CASE(gen_type_a)
+TEST_CASE_METHOD(Fixture, "gen_type_a")
 {
     PairingParamPtr param = PairingParam::gen_type_a(160, 512);
     string param_str = param->to_str();
-    BOOST_TEST(param_str.find("type a") != string::npos);
+    CHECK_THAT(param_str, Contains("type a"));
 }
 
-BOOST_AUTO_TEST_CASE(gen_type_i)
+TEST_CASE_METHOD(Fixture, "gen_type_i")
 {
     PairingParamPtr param = PairingParam::gen_type_i(150);
     string param_str = param->to_str();
-    BOOST_TEST(param_str.find("type i") != string::npos);
+    CHECK_THAT(param_str, Contains("type i"));
 }
 
-BOOST_AUTO_TEST_CASE(gen_type_e)
+TEST_CASE_METHOD(Fixture, "gen_type_e")
 {
     PairingParamPtr param = PairingParam::gen_type_e(160, 1024);
     string param_str = param->to_str();
-    BOOST_TEST(param_str.find("type e") != string::npos);
+    CHECK_THAT(param_str, Contains("type e"));
 }
 
-BOOST_AUTO_TEST_CASE(gen_type_f)
+TEST_CASE_METHOD(Fixture, "gen_type_f")
 {
     PairingParamPtr param = PairingParam::gen_type_f(160);
     string param_str = param->to_str();
-    BOOST_TEST(param_str.find("type f") != string::npos);
+    CHECK_THAT(param_str, Contains("type f"));
 }

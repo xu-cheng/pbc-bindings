@@ -15,10 +15,11 @@ test: build
 	cd build && $(MAKE) test
 
 test-verbose:
-	BOOST_TEST_LOG_LEVEL=message $(MAKE) test ARGS="-VV"
+	$(MAKE) test ARGS="-VV"
 
 clang-format:
 	@find . -type f \( -name "*.cpp" -or -name "*.h" -or -name "*.hpp" \) \
-		-not -path "./build/*" -print -exec clang-format -i {} \;
+		-not -path "./build/*" -not -path "./deps/*" \
+		-print -exec clang-format -i {} \;
 
 .PHONY: build cmake clean clang-format test test-verbose

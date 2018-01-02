@@ -1,15 +1,24 @@
-#define BOOST_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE __BASE_FILE__
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
 
-#include <boost/test/unit_test.hpp>
 #include <fstream>
+#include <string>
 #include "pbc/pbc.hpp"
 
 using namespace std;
 using namespace pbc;
+using namespace Catch::Matchers;
 
-const string TYPE_A_PARAM = []() -> string {
-    ifstream f("./a.param", ios::in);
-    return string(istreambuf_iterator<char>(f), istreambuf_iterator<char>());
-}();
+struct Fixture {
+    Fixture()
+    {
+        ifstream f("./a.param", ios::in);
+        type_a_param =
+            string(istreambuf_iterator<char>(f), istreambuf_iterator<char>());
+        pairing = Pairing::init_from_param_str(type_a_param);
+    }
+    ~Fixture() {}
+
+    string type_a_param;
+    PairingPtr pairing;
+};

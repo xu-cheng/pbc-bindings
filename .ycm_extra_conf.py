@@ -65,6 +65,7 @@ def FlagsForFile(filename, **kwargs):
         "-x",
         "c++",
         "-Iinclude/",
+        "-Ideps/include/",
     ]
     flags += SystemIncludePathasFlags()
     flags = MakeRelativePathsInFlagsAbsolute(flags, DirectoryOfThisScript())
