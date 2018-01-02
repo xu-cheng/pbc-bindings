@@ -129,4 +129,4 @@ namespace pbc
         Element _g1;
         backend::pairing_pp_s _pairing_pp;
     };
-};
+}  // namespace pbc

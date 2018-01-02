@@ -13,4 +13,4 @@ namespace pbc
     {
 #include <pbc/pbc.h>
     };
-};
+}  // namespace pbc

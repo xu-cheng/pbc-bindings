@@ -39,4 +39,4 @@ namespace pbc
     public:
         ElementTypeError() : invalid_argument("Element has wrong type.") {}
     };
-};
+}  // namespace pbc

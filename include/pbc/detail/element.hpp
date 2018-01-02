@@ -485,4 +485,4 @@ namespace pbc
         o << e.to_str();
         return o;
     }
-};
+}  // namespace pbc

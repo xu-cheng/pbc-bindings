@@ -116,4 +116,4 @@ namespace pbc
             const_cast<backend::element_s*>(n3.c_element()));
         return out;
     }
-};
+}  // namespace pbc

@@ -101,4 +101,4 @@ namespace pbc
     private:
         backend::pairing_s _pairing;
     };
-};
+}  // namespace pbc

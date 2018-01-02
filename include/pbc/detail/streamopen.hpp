@@ -88,5 +88,5 @@ namespace pbc
             delete sfd;
         }
 #endif
-    };
-};
+    }  // namespace streamopen
+}  // namespace pbc

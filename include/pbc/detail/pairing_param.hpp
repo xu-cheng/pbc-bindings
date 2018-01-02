@@ -74,4 +74,4 @@ namespace pbc
     private:
         backend::pbc_param_s _param;
     };
-}
+}  // namespace pbc

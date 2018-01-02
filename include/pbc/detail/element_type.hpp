@@ -24,4 +24,4 @@ namespace pbc
         }
         return o;
     }
-};
+}  // namespace pbc
