@@ -1,6 +1,6 @@
 /*
   The MIT License (MIT)
-  Copyright (c) 2016 Xu Cheng
+  Copyright (c) 2016-2018 Xu Cheng
   See licensing at:
     https://opensource.org/licenses/MIT
 */
