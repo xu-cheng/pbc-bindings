@@ -12,5 +12,5 @@ namespace pbc
     namespace backend
     {
 #include <pbc/pbc.h>
-    };
+    }  // namespace backend
 }  // namespace pbc
