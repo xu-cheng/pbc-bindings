@@ -60,6 +60,7 @@ namespace pbc
             std::fflush(sfd->fd);
             std::fclose(sfd->fd);
             sfd->buf->write(sfd->data, sfd->size);
+            delete[] sfd->data;
             delete sfd;
         }
 #else
