@@ -55,26 +55,26 @@ namespace std{
 %}
 
 %extend pbc::Element {
-    pbc::Element __pow__(const pbc::Element& e)
+    pbc::Element __pow__(const pbc::Element& e) const
     {
         return $self->pow(e);
     }
-    pbc::Element __pow__(int value)
+    pbc::Element __pow__(int value) const
     {
         return $self->pow(value);
     }
-    std::string __str__()
+    std::string __str__() const
     {
         return $self->to_str();
     }
 };
 
 %extend pbc::FixedBasePower {
-    pbc::Element __pow__(const pbc::Element& e)
+    pbc::Element __pow__(const pbc::Element& e) const
     {
         return $self->apply(e);
     }
-    pbc::Element __pow__(int value)
+    pbc::Element __pow__(int value) const
     {
         return $self->apply(value);
     }
