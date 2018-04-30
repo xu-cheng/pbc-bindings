@@ -74,7 +74,7 @@ namespace pbc
     };
 
     // return a1^n1 * a2^n2
-    Element pow2(const Element& a1, const Element& n1, const Element& a2,
+    inline Element pow2(const Element& a1, const Element& n1, const Element& a2,
                  const Element& n2)
     {
         if (a1.type() == ElementType::NotInitialized ||
@@ -94,7 +94,7 @@ namespace pbc
     }
 
     // return a1^n1 * a2^n2 * a3^n3
-    Element pow3(const Element& a1, const Element& n1, const Element& a2,
+    inline Element pow3(const Element& a1, const Element& n1, const Element& a2,
                  const Element& n2, const Element& a3, const Element& n3)
     {
         if (a1.type() == ElementType::NotInitialized ||

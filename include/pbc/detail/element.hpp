@@ -480,7 +480,7 @@ namespace pbc
         PairingPtr _pairing;
     };
 
-    std::ostream& operator<<(std::ostream& o, const Element& e)
+    inline std::ostream& operator<<(std::ostream& o, const Element& e)
     {
         o << e.to_str();
         return o;

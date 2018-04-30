@@ -18,7 +18,7 @@
 
 namespace pbc
 {
-    Element e(const Element& g1, const Element& g2)
+    inline Element e(const Element& g1, const Element& g2)
     {
         if (g1.type() == ElementType::NotInitialized ||
             g2.type() == ElementType::NotInitialized)

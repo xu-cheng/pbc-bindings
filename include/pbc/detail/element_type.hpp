@@ -13,7 +13,7 @@ namespace pbc
 {
     enum class ElementType { G1, G2, GT, Zr, NotInitialized };
 
-    std::ostream& operator<<(std::ostream& o, ElementType type)
+    inline std::ostream& operator<<(std::ostream& o, ElementType type)
     {
         switch (type) {
             case ElementType::G1: o << "G1"; break;
