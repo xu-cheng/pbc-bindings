@@ -260,17 +260,16 @@ namespace pbc
         }
         Element& operator=(const Element& e)
         {
-            if (_type != ElementType::NotInitialized && _type != e._type) {
+            if (_type != ElementType::NotInitialized) {
                 backend::element_clear(&_element);
                 _type = ElementType::NotInitialized;
             }
-            if (_type == ElementType::NotInitialized &&
-                e._type != ElementType::NotInitialized)
+            if (e._type != ElementType::NotInitialized) {
                 backend::element_init_same_as(
                     &_element, const_cast<backend::element_s*>(e.c_element()));
-            if (e._type != ElementType::NotInitialized)
                 backend::element_set(
                     &_element, const_cast<backend::element_s*>(e.c_element()));
+            }
             _type = e._type;
             _pairing = e._pairing;
             return *this;
